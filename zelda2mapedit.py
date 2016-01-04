@@ -6,6 +6,7 @@ A simple overworld-editor for Zelda 2 - The Adventure of Link
 
 Author: Johan Björnell <johan@bjornell.se>
 
+Version: 0.1.0
 
 TO FIX:
     Maximize window button
@@ -13,6 +14,8 @@ TO FIX:
     Clicking cancel on open dialog
     Update mapsize-label on map switch
     Disable editing before opening a file
+    Open dialog code error checking
+    About box
 """
 
 from Tkinter import *
@@ -611,10 +614,10 @@ class Zelda2MapEdit:
 
     def mouseclick(self, event):
         c = event.widget
-        # Clicked position on canvas
+        # Clicked position on canvas ..
         x, y = c.canvasx(event.x), c.canvasy(event.y)
 
-        # Relates to this position in the currentmap ..
+        # .. Relates to this position in the currentmap ..
         maparrayx = int(x)/16
         maparrayy = int(y)/16
 
@@ -653,5 +656,3 @@ class Zelda2MapEdit:
 root = Tk()
 app= Zelda2MapEdit(root)
 root.mainloop()
-
-
