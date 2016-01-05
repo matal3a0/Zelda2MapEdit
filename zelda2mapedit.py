@@ -172,6 +172,8 @@ class Zelda2MapEdit:
         # Filename
         self.filename = ""
 
+        # Enable edit after file open only
+        self.editenabled = 0
 
     # End __init__
 
@@ -374,6 +376,9 @@ class Zelda2MapEdit:
         # Default to West Hyrule
         self.changemap("West Hyrule")
         self.drawmap()
+
+        # Enable editing
+        self.editenabled = 1
 
     def saveromfile(self):
         # Save self.currentmap to correct self.maparray[0-3]
@@ -613,39 +618,40 @@ class Zelda2MapEdit:
         self.coordlabeltext.set(text)
 
     def mouseclick(self, event):
-        c = event.widget
-        # Clicked position on canvas ..
-        x, y = c.canvasx(event.x), c.canvasy(event.y)
+        if self.editenabled == 1:
+            c = event.widget
+            # Clicked position on canvas ..
+            x, y = c.canvasx(event.x), c.canvasy(event.y)
 
-        # .. Relates to this position in the currentmap ..
-        maparrayx = int(x)/16
-        maparrayy = int(y)/16
+            # .. Relates to this position in the currentmap ..
+            maparrayx = int(x)/16
+            maparrayy = int(y)/16
 
-        # .. and to this position to put the new terrain on the canvas
-        x = int(self.round_down(x, 16))
-        y = int(self.round_down(y, 16))
+            # .. and to this position to put the new terrain on the canvas
+            x = int(self.round_down(x, 16))
+            y = int(self.round_down(y, 16))
 
-        # Update currentmap 
-        self.currentmap[maparrayx][maparrayy] = self.selectedterrain
-        # Draw tile
-        self.drawtile(maparrayx,maparrayy)
+            # Update currentmap 
+            self.currentmap[maparrayx][maparrayy] = self.selectedterrain
+            # Draw tile
+            self.drawtile(maparrayx,maparrayy)
 
-        # Calculate map size and update label
-        mapstring = ""
-        for y in range(self.mapsizey):
-            for x in range(self.mapsizex):
-                mapstring += str(self.currentmap[x][y])
-        encmapstring = self.mapencode(mapstring)
+            # Calculate map size and update label
+            mapstring = ""
+            for y in range(self.mapsizey):
+                for x in range(self.mapsizex):
+                    mapstring += str(self.currentmap[x][y])
+            encmapstring = self.mapencode(mapstring)
         
-        if self.activemap == "West Hyrule":
-            text = `len(encmapstring)/2` + "/" + `self.origmapsize0`
-        elif self.activemap == "Death Mountain":
-            text = `len(encmapstring)/2` + "/" + `self.origmapsize1`
-        elif self.activemap == "East Hyrule":
-            text = `len(encmapstring)/2` + "/" + `self.origmapsize2`
-        elif self.activemap == "Maze Island":
-            text = `len(encmapstring)/2` + "/" + `self.origmapsize3`
-        self.mapsizelabeltext.set(text)
+            if self.activemap == "West Hyrule":
+                text = `len(encmapstring)/2` + "/" + `self.origmapsize0`
+            elif self.activemap == "Death Mountain":
+                text = `len(encmapstring)/2` + "/" + `self.origmapsize1`
+            elif self.activemap == "East Hyrule":
+                text = `len(encmapstring)/2` + "/" + `self.origmapsize2`
+            elif self.activemap == "Maze Island":
+                text = `len(encmapstring)/2` + "/" + `self.origmapsize3`
+            self.mapsizelabeltext.set(text)
 
     def round_down(self, num, divisor):
         return num - (num%divisor)
