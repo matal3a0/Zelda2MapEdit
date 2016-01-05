@@ -6,16 +6,8 @@ A simple overworld-editor for Zelda 2 - The Adventure of Link
 
 Author: Johan Björnell <johan@bjornell.se>
 
-Version: 0.1.0
+Version: 0.1.1
 
-TO FIX:
-    Maximize window button
-    Resize window to max size on startup based on resolution
-    Clicking cancel on open dialog
-    Update mapsize-label on map switch
-    Disable editing before opening a file
-    Open dialog code error checking
-    About box
 """
 
 from Tkinter import *
