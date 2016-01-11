@@ -918,7 +918,7 @@ class Zelda2MapEdit:
                 text = `len(encmapstring)/2` + "/" + `self.origmapsize3`
             self.mapsizelabeltext.set(text)
 
-    def rightclick(self, event)
+    def rightclick(self, event):
         c = event.widget
         # Clicked position on canvas ..
         x, y = c.canvasx(event.x), c.canvasy(event.y)
