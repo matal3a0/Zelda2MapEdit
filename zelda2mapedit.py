@@ -6,7 +6,7 @@ A simple overworld-editor for Zelda 2 - The Adventure of Link
 
 Author: Johan Björnell <johan@bjornell.se>
 
-Version: 0.2.0
+Version: 0.2.1
 
 """
 
@@ -199,7 +199,7 @@ class Zelda2MapEdit:
         self.editenabled = 0
 
         # Locations on map
-
+        # Name, x-location in rom, y-location in rom, x-offset, y-offset
         # West Hyrule
         self.map0locations = [[ "North Castle", "466E", "462F", 0, 0, 0, 0 ],
                              [ "Trophy cave", "466F", "4630", 0, 0, 0, 0 ],
@@ -591,7 +591,7 @@ class Zelda2MapEdit:
              self.map2locations[i][3] = int(handle.read(1).encode("hex"), 16)
              handle.seek(int(self.map2locations[i][2], 16))
              self.map2locations[i][4] = int(handle.read(1).encode("hex"), 16)
-             print self.map2locations[i][0],self.map2locations[i][3],self.map2locations[i][4],self.map2locations[i][5],self.map2locations[i][6]
+             #print self.map2locations[i][0],self.map2locations[i][3],self.map2locations[i][4],self.map2locations[i][5],self.map2locations[i][6]
 
         # Map 3
         handle.seek(self.mapstart3)
@@ -670,22 +670,34 @@ class Zelda2MapEdit:
             i += 2
 
         # Save locations map 0
-#        for i, _ in enumerate(self.map0locations):
-#            x = self.map0locations[i][3]-self.map0locations[i][5]
-#            y = self.map0locations[i][4]-self.map0locations[i][6]
-#            print "saving", self.map0locations[i][0], self.map0locations[i][1], self.map0locations[i][2], self.map0locations[i][3], self.map0locations[i][4], self.map0locations[i][5], self.map0locations[i][6]
-#            print "x:", x, "y:", y
-#            xa = hex(x)[2:].zfill(2)
-#            #xa = hex(x)[2:]
-#            xb = xa.decode("hex")
-#            ya = hex(y)[2:].zfill(2)
-#            #ya = hex(y)[2:]
-#            print "xa:", xa, "ya:", ya
-#            yb = ya.decode("hex")
-#            handle.seek(int(self.map0locations[i][1], 16))
-#            handle.write(xb) 
-#            handle.seek(int(self.map0locations[i][2], 16))
-#            handle.write(yb) 
+        for i, _ in enumerate(self.map0locations):
+            ## This is working, but ugly!
+            #x = self.map0locations[i][3]
+            #y = self.map0locations[i][4]
+            #print "saving", self.map0locations[i][0], self.map0locations[i][1], self.map0locations[i][2], self.map0locations[i][3], self.map0locations[i][4], self.map0locations[i][5], self.map0locations[i][6]
+            #print "x:", x, "y:", y
+            #xa = hex(x)[2:].zfill(2)
+            #xb = xa.decode("hex")
+            #ya = hex(y)[2:].zfill(2)
+            #print "xa:", xa, "ya:", ya
+            #yb = ya.decode("hex")
+            #handle.seek(int(self.map0locations[i][1], 16))
+            #handle.write(xb) 
+            #handle.seek(int(self.map0locations[i][2], 16))
+            #handle.write(yb)
+            ## Trying more compact code here..
+            # Convert integer value to hex-string without 0x, and pad with 0
+            x = hex(self.map0locations[i][3])[2:].zfill(2)
+            y = hex(self.map0locations[i][4])[2:].zfill(2)
+            # Convert string to binary value
+            xa = x.decode("hex")
+            ya = y.decode("hex")
+            # Find address in romfile and write value
+            handle.seek(int(self.map0locations[i][1], 16))
+            handle.write(xa) 
+            handle.seek(int(self.map0locations[i][2], 16))
+            handle.write(ya)
+            ## 
 
         # Map 1
         mapstring = ""
@@ -703,6 +715,17 @@ class Zelda2MapEdit:
             handle.write(byte)
             i += 2
 
+        # Save locations map 1
+        for i, _ in enumerate(self.map1locations):
+            x = hex(self.map1locations[i][3])[2:].zfill(2)
+            y = hex(self.map1locations[i][4])[2:].zfill(2)
+            xa = x.decode("hex")
+            ya = y.decode("hex")
+            handle.seek(int(self.map1locations[i][1], 16))
+            handle.write(xa) 
+            handle.seek(int(self.map1locations[i][2], 16))
+            handle.write(ya)
+
         # Map 2
         mapstring = ""
         for y in range(self.mapsizey):
@@ -718,6 +741,17 @@ class Zelda2MapEdit:
             byte = byte.decode("hex")
             handle.write(byte)
             i += 2
+
+        # Save locations map 2
+        for i, _ in enumerate(self.map2locations):
+            x = hex(self.map2locations[i][3])[2:].zfill(2)
+            y = hex(self.map2locations[i][4])[2:].zfill(2)
+            xa = x.decode("hex")
+            ya = y.decode("hex")
+            handle.seek(int(self.map2locations[i][1], 16))
+            handle.write(xa) 
+            handle.seek(int(self.map2locations[i][2], 16))
+            handle.write(ya)
 
         # Map 3
         mapstring = ""
@@ -736,6 +770,16 @@ class Zelda2MapEdit:
             i += 2
 
         
+        # Save locations map 3
+        for i, _ in enumerate(self.map3locations):
+            x = hex(self.map3locations[i][3])[2:].zfill(2)
+            y = hex(self.map3locations[i][4])[2:].zfill(2)
+            xa = x.decode("hex")
+            ya = y.decode("hex")
+            handle.seek(int(self.map3locations[i][1], 16))
+            handle.write(xa) 
+            handle.seek(int(self.map3locations[i][2], 16))
+            handle.write(ya)
 
         handle.close()
 
