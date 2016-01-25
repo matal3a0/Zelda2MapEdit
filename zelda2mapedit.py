@@ -6,7 +6,7 @@ A simple overworld-editor for Zelda 2 - The Adventure of Link
 
 Author: Johan Björnell <johan@bjornell.se>
 
-Version: 0.1.1
+Version: 0.2.0
 
 """
 
@@ -47,8 +47,14 @@ class Zelda2MapEdit:
         self.master.grid_columnconfigure(0, weight=1)
         self.canvas.configure(scrollregion = (0, 0, 1024, 1200))
 
-        # Call function leftclick on left click on canvas
+        # Call function leftclick when left click on canvas
         self.canvas.bind("<Button 1>", self.leftclick)
+        # Call function rightpress on right mouse button press on canvas
+        self.canvas.bind("<ButtonPress-3>", self.rightpress)
+        # Call function rightmotion when right mouse is down and mouse is moved on canvas
+        self.canvas.bind("<B3-Motion>", self.rightmotion)
+        # Call function rightrelease on right mouse button release on canvas
+        self.canvas.bind("<ButtonRelease-3>", self.rightrelease)
         # Call function mousemove on mouse movement over canvas
         self.canvas.bind("<Motion>", self.mousemove)
 
@@ -193,6 +199,7 @@ class Zelda2MapEdit:
         self.editenabled = 0
 
         # Locations on map
+
         # West Hyrule
         self.map0locations = [[ "North Castle", "466E", "462F", 0, 0, 0, 0 ],
                              [ "Trophy cave", "466F", "4630", 0, 0, 0, 0 ],
@@ -212,11 +219,11 @@ class Zelda2MapEdit:
                              [ "Water of Life cave", "467D", "463E", 0, 0, 0, 0 ],
                              [ "2nd Heart Container cave", "467E", "463F", 0, 0, 0, 0 ],
                              [ "Hole to Palace 3 cave", "467F", "4640", 0, 0, 0, 0 ],
-                             [ "Caves on Palace 3's island", "4680", "4641", 0, 0, 0, 0 ],
+                             [ "Caves on Palace 3's island", "4680", "4641", 0, 0, 64, 0 ],
                              [ "North and South bridge to island before Death Mt.", "4681", "4642", 0, 0, 0, 0 ],
                              [ "East and West bridge to island before Death Mt.", "4682", "4643", 0, 0, 0, 0 ],
                              [ "West exit of bridge after Death Mt.", "4683", "4644", 0, 0, 0, 0 ],
-                             [ "East exit of bridge after Death Mt.", "4684", "4645", 0, 0, 0, 0 ],
+                             [ "East exit of bridge after Death Mt.", "4684", "4645", 0, 0, 64, 0 ],
                              [ "Forest with Fairy after Western Mt. cave", "4685", "4646", 0, 0, 0, 0 ],
                              [ "Red Magic Jar in swamp", "4686", "4647", 0, 0, 0, 0 ],
                              [ "forest with Fairy East of island before Death Mt.", "4687", "4648", 0, 0, 0, 0 ],
@@ -225,66 +232,66 @@ class Zelda2MapEdit:
                              [ "Lost Woods", "468A", "464B", 0, 0, 0, 0 ],
                              [ "Lost Woods", "468B", "464C", 0, 0, 0, 0 ],
                              [ "Red Magic Jar on trail in swamp", "468C", "464D", 0, 0, 0, 0 ],
-                             [ "Extra Red Magic Jar on beach (not used)", "468D", "464E", 0, 0, 0, 0 ],
+                             [ "Extra Red Magic Jar on beach (not used in original game)", "468D", "464E", 0, 0, 0, 0 ],
                              [ "Life doll on beach", "468E", "464F", 0, 0, 0, 0 ],
-                             [ "Raft Dock to East Hyrule", "4697", "4658", 0, 0, 0, 0 ],
-                             [ "Cave entrance to Death Mountain", "4698", "4659", 0, 0, 0, 0 ],
-                             [ "Cave exit to Death Mountain", "4699", "465A", 0, 0, 0, 0 ],
-                             [ "King's Tomb", "469A", "465B", 0, 0, 0, 0 ],
+                             [ "Raft Dock to East Hyrule", "4697", "4658", 0, 0, 0, 128 ],
+                             [ "Cave entrance to Death Mountain", "4698", "4659", 0, 0, 0, 128 ],
+                             [ "Cave exit to Death Mountain", "4699", "465A", 0, 0, 0, 128 ],
+                             [ "King's Tomb", "469A", "465B", 0, 0, 0, 128 ],
                              [ "Rauru", "469B", "465C", 0, 0, 64, 128 ],
                              [ "Ruto", "469D", "465E", 0, 0, 64, 128 ],
-                             [ "Southern Saria", "469E", "465F", 0, 0, 64, 64 ],
+                             [ "Southern Saria", "469E", "465F", 0, 0, 0, 128 ],
                              [ "Northern Saria", "469F", "4660", 0, 0, 64, 128 ],
-                             [ "Bagu's Cabin", "46A0", "4661", 0, 0, 0, 0 ],
+                             [ "Bagu's Cabin", "46A0", "4661", 0, 0, 0, 128 ],
                              [ "Mido", "46A1", "4662", 0, 0, 64, 128 ],
                              [ "Parapa Palace", "46A2", "4663", 0, 0, 0, 128 ],
                              [ "Swamp Palace", "46A3", "4664", 0, 0, 0, 128 ],
                              [ "Island Palace", "46A4", "4665", 0, 0, 0, 128 ]]
 
         self.map1locations = [[ "Cave B West Exit", "614B", "610C", 0, 0, 0, 0 ],
-                             [ "Cave B East Exit", "614C", "610D", 0, 0, 0, 0 ],
+                             [ "Cave B East Exit", "614C", "610D", 0, 0, 64, 0],
                              [ "Cave C West Exit", "614D", "610E", 0, 0, 0, 0 ],
-                             [ "Cave C East Exit", "614E", "610F", 0, 0, 0, 0 ],
+                             [ "Cave C East Exit", "614E", "610F", 0, 0, 64, 0 ],
                              [ "Cave E South Exit", "614F", "6110", 0, 0, 0, 0 ],
-                             [ "Cave E North Exit", "6150", "6111", 0, 0, 0, 0 ],
+                             [ "Cave E North Exit", "6150", "6111", 0, 0, 64, 0 ],
                              [ "Cave D West Exit", "6151", "6112", 0, 0, 0, 0 ],
-                             [ "Cave D East Exit", "6152", "6113", 0, 0, 0, 0 ],
+                             [ "Cave D East Exit", "6152", "6113", 0, 0, 64, 0 ],
                              [ "Cave F West Exit", "6153", "6114", 0, 0, 0, 0 ],
-                             [ "Cave F East Exit", "6154", "6115", 0, 0, 0, 0 ],
+                             [ "Cave F East Exit", "6154", "6115", 0, 0, 64, 0 ],
                              [ "Cave J West Exit", "6155", "6116", 0, 0, 0, 0 ],
-                             [ "Cave J East Exit", "6156", "6117", 0, 0, 0, 0 ],
+                             [ "Cave J East Exit", "6156", "6117", 0, 0, 64, 0 ],
                              [ "Cave I North Exit", "6157", "6118", 0, 0, 0, 0 ],
-                             [ "Cave I South Exit", "6158", "6119", 0, 0, 0, 0 ],
+                             [ "Cave I South Exit", "6158", "6119", 0, 0, 64, 0 ],
                              [ "Cave L North Exit", "6159", "611A", 0, 0, 0, 0 ],
-                             [ "Cave L South Exit", "615A", "611B", 0, 0, 0, 0 ],
+                             [ "Cave L South Exit", "615A", "611B", 0, 0, 64, 0 ],
                              [ "Cave O North Exit", "615B", "611C", 0, 0, 0, 0 ],
-                             [ "Cave O South Exit", "615C", "611D", 0, 0, 0, 0 ],
+                             [ "Cave O South Exit", "615C", "611D", 0, 0, 64, 0 ],
                              [ "Cave M West Exit", "615D", "611E", 0, 0, 0, 0 ],
-                             [ "Cave M East Exit", "615E", "611F", 0, 0, 0, 0 ],
+                             [ "Cave M East Exit", "615E", "611F", 0, 0, 64, 0 ],
                              [ "Cave P West Exit", "615F", "6120", 0, 0, 0, 0 ],
-                             [ "Cave P East Exit", "6160", "6121", 0, 0, 0, 0 ],
+                             [ "Cave P East Exit", "6160", "6121", 0, 0, 64, 0 ],
                              [ "Cave Q West Exit", "6161", "6122", 0, 0, 0, 0 ],
-                             [ "Cave Q East Exit", "6162", "6123", 0, 0, 0, 0 ],
+                             [ "Cave Q East Exit", "6162", "6123", 0, 0, 64, 0 ],
                              [ "Cave R South Exit", "6163", "6124", 0, 0, 0, 0 ],
-                             [ "Cave R North Exit", "6164", "6125", 0, 0, 0, 0 ],
+                             [ "Cave R North Exit", "6164", "6125", 0, 0, 64, 0 ],
                              [ "Cave N South Exit", "6165", "6126", 0, 0, 0, 0 ],
-                             [ "Cave N North Exit", "6166", "6127", 0, 0, 0, 0 ],
+                             [ "Cave N North Exit", "6166", "6127", 0, 0, 64, 0 ],
                              [ "Hammer Cave", "6167", "6128", 0, 0, 0, 0 ],
                              [ "Elevator Cave G West Exit (Bottom left)", "6168", "6129", 0, 0, 0, 0 ],
-                             [ "Elevator Cave G East Exit (Bottom right)", "6169", "612A", 0, 0, 0, 0 ],
-                             [ "Elevator Cave G West Exit (Top left)", "616A", "612B", 0, 0, 0, 0 ],
-                             [ "Elevator Cave G East Exit (Top Right)", "616B", "612C", 0, 0, 0, 0 ],
+                             [ "Elevator Cave G East Exit (Bottom right)", "6169", "612A", 0, 0, 64, 0 ],
+                             [ "Elevator Cave G West Exit (Top left)", "616A", "612B", 0, 0, 128, 0 ],
+                             [ "Elevator Cave G East Exit (Top Right)", "616B", "612C", 0, 0, 192, 0 ],
                              [ "Elevator Cave H West Exit (Top left)", "616C", "612D", 0, 0, 0, 0 ],
-                             [ "Elevator Cave H East Exit (Top Right)", "616D", "612E", 0, 0, 0, 0 ],
-                             [ "Elevator Cave H North Exit (Bottom left)", "616E", "612F", 0, 0, 0, 0 ],
-                             [ "Elevator Cave H South Exit (Bottom right)", "616F", "6130", 0, 0, 0, 0 ],
+                             [ "Elevator Cave H East Exit (Top Right)", "616D", "612E", 0, 0, 64, 0 ],
+                             [ "Elevator Cave H North Exit (Bottom left)", "616E", "612F", 0, 0, 128, 0 ],
+                             [ "Elevator Cave H South Exit (Bottom right)", "616F", "6130", 0, 0, 192, 0 ],
                              [ "Maze Island Forced Battle Scene 2", "6170", "6131", 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 1", "6171", "6132", 0, 0, 0, 0 ],
                              [ "Maze Island's Magic Container", "6172", "6133", 0, 0, 0, 0 ],
-                             [ "Bridge back to East Hyrule", "6173", "6134", 0, 0, 0, 0 ],
-                             [ "Cave A back to West Hyrule", "6175", "6136", 0, 0, 0, 0 ],
-                             [ "Cave K back to West Hyrule", "6176", "6137", 0, 0, 0, 0 ],
-                             [ "4th Palace", "617F", "6140", 0, 0, 0, 0 ],
+                             [ "Bridge back to East Hyrule", "6173", "6134", 0, 0, 0, 128 ],
+                             [ "Cave A back to West Hyrule", "6175", "6136", 0, 0, 0, 128 ],
+                             [ "Cave K back to West Hyrule", "6176", "6137", 0, 0, 0, 128 ],
+                             [ "4th Palace", "617F", "6140", 0, 0, 0, 128 ],
                              [ "Maze Island Child", "6182", "6143", 0, 0, 0, 0 ],
                              [ "Death Mountain's Magic Container", "6183", "6144", 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 3", "6184", "6145", 0, 0, 0, 0 ],
@@ -304,16 +311,16 @@ class Zelda2MapEdit:
                              [ "2nd battle scene before Darunia", "8676", "8637", 0, 0, 0, 0 ],
                              [ "1st battle scene before Darunia", "8677", "8638", 0, 0, 0, 0 ],
                              [ "Heart Container in Ocean", "8678", "8639", 0, 0, 0, 0 ],
-                             [ "south cave north of Nabooru", "8679", "863A", 0, 0, 0, 0 ],
-                             [ "north cave north of Nabooru", "867A", "863B", 0, 0, 0, 0 ],
+                             [ "South cave north of Nabooru", "8679", "863A", 0, 0, 0, 0 ],
+                             [ "North cave north of Nabooru", "867A", "863B", 0, 0, 64, 0 ],
                              [ "Cave with 500 exp. bag south of Nabooru", "867B", "863C", 0, 0, 0, 0 ],
                              [ "Cave with 500 exp. bag North of Old Kasuto", "867C", "863D", 0, 0, 0, 0 ],
-                             [ "west cave near New Kasuto", "867D", "863E", 0, 0, 0, 0 ],
-                             [ "east cave near New Kasuto", "867E", "863F", 0, 0, 0, 0 ],
+                             [ "West cave near New Kasuto", "867D", "863E", 0, 0, 0, 0 ],
+                             [ "East cave near New Kasuto", "867E", "863F", 0, 0, 64, 0 ],
                              [ "Cave C on the way to Great Palace", "867F", "8640", 0, 0, 0, 0 ],
-                             [ "Cave D on the way to Great Palace", "8680", "8641", 0, 0, 0, 0 ],
-                             [ "CAve B on the way to Great Palace", "8681", "8642", 0, 0, 0, 0 ],
-                             [ "Cave A on the way to Great Palace", "8682", "8643", 0, 0, 0, 0 ],
+                             [ "Cave D on the way to Great Palace", "8680", "8641", 0, 0, 64, 0 ],
+                             [ "Cave B on the way to Great Palace", "8681", "8642", 0, 0, 0, 0 ],
+                             [ "Cave A on the way to Great Palace", "8682", "8643", 0, 0, 64, 0 ],
                              [ "Life doll in swamp", "8683", "8644", 0, 0, 0, 0 ],
                              [ "Extra battle scene (same spot as 864B)", "8684", "8645", 0, 0, 0, 0 ],
                              [ "500 exp. bag on beach near 5th Palace", "8685", "8646", 0, 0, 0, 0 ],
@@ -326,60 +333,60 @@ class Zelda2MapEdit:
                              [ "3rd Forced Battle scene in the Path of Fire", "868C", "864D", 0, 0, 0, 0 ],
                              [ "2nd Forced Battle scene in the Path of Fire", "868D", "864E", 0, 0, 0, 0 ],
                              [ "1st Forced Battle scene in the Path of Fire", "868E", "864F", 0, 0, 0, 0 ],
-                             [ "Bridge to Maze Island", "8696", "8657", 0, 0, 0, 0 ],
-                             [ "Raft dock back to West Hyrule", "8697", "8658", 0, 0, 0, 0 ],
-                             [ "Nabooru", "869B", "865C", 0, 0, 0, 0 ],
-                             [ "Darunia", "869D", "865E", 0, 0, 0, 0 ],
+                             [ "Bridge to Maze Island", "8696", "8657", 0, 0, 0, 128 ],
+                             [ "Raft dock back to West Hyrule", "8697", "8658", 0, 0, 0, 128 ],
+                             [ "Nabooru", "869B", "865C", 0, 0, 64, 128 ],
+                             [ "Darunia", "869D", "865E", 0, 0, 64, 128 ],
                              [ "New Kasuto *", "869F", "8660", 0, 0, 0, 0 ],
-                             [ "Old Kasuto", "86A1", "8662", 0, 0, 0, 0 ],
-                             [ "5th Palace", "86A2", "8663", 0, 0, 0, 0 ],
+                             [ "Old Kasuto", "86A1", "8662", 0, 0, 64, 128 ],
+                             [ "5th Palace", "86A2", "8663", 0, 0, 0, 128 ],
                              [ "6th Palace **", "86A3", "8664", 0, 0, 0, 0 ],
-                             [ "Great Palace", "86A4", "8665", 0, 0, 0, 0 ]]
+                             [ "Great Palace", "86A4", "8665", 0, 0, 0, 128 ]]
 
         self.map3locations = [[ "Cave B West Exit", "A14B", "A10C", 0, 0, 0, 0 ],
-                             [ "Cave B East Exit", "A14C", "A10D", 0, 0, 0, 0 ],
+                             [ "Cave B East Exit", "A14C", "A10D", 0, 0, 64, 0 ],
                              [ "Cave C West Exit", "A14D", "A10E", 0, 0, 0, 0 ],
-                             [ "Cave C East Exit", "A14E", "A10F", 0, 0, 0, 0 ],
+                             [ "Cave C East Exit", "A14E", "A10F", 0, 0, 64, 0 ],
                              [ "Cave E South Exit", "A14F", "A110", 0, 0, 0, 0 ],
-                             [ "Cave E North Exit", "A150", "A111", 0, 0, 0, 0 ],
+                             [ "Cave E North Exit", "A150", "A111", 0, 0, 64, 0 ],
                              [ "Cave D West Exit", "A151", "A112", 0, 0, 0, 0 ],
-                             [ "Cave D East Exit", "A152", "A113", 0, 0, 0, 0 ],
+                             [ "Cave D East Exit", "A152", "A113", 0, 0, 64, 0 ],
                              [ "Cave F West Exit", "A153", "A114", 0, 0, 0, 0 ],
-                             [ "Cave F East Exit", "A154", "A115", 0, 0, 0, 0 ],
+                             [ "Cave F East Exit", "A154", "A115", 0, 0, 64, 0 ],
                              [ "Cave J West Exit", "A155", "A116", 0, 0, 0, 0 ],
-                             [ "Cave J East Exit", "A156", "A117", 0, 0, 0, 0 ],
+                             [ "Cave J East Exit", "A156", "A117", 0, 0, 64, 0 ],
                              [ "Cave I North Exit", "A157", "A118", 0, 0, 0, 0 ],
-                             [ "Cave I South Exit", "A158", "A119", 0, 0, 0, 0 ],
+                             [ "Cave I South Exit", "A158", "A119", 0, 0, 64, 0 ],
                              [ "Cave L North Exit", "A159", "A11A", 0, 0, 0, 0 ],
-                             [ "Cave L South Exit", "A15A", "A11B", 0, 0, 0, 0 ],
+                             [ "Cave L South Exit", "A15A", "A11B", 0, 0, 64, 0 ],
                              [ "Cave O North Exit", "A15B", "A11C", 0, 0, 0, 0 ],
-                             [ "Cave O South Exit", "A15C", "A11D", 0, 0, 0, 0 ],
+                             [ "Cave O South Exit", "A15C", "A11D", 0, 0, 64, 0 ],
                              [ "Cave M West Exit", "A15D", "A11E", 0, 0, 0, 0 ],
-                             [ "Cave M East Exit", "A15E", "A11F", 0, 0, 0, 0 ],
+                             [ "Cave M East Exit", "A15E", "A11F", 0, 0, 64, 0 ],
                              [ "Cave P West Exit", "A15F", "A120", 0, 0, 0, 0 ],
-                             [ "Cave P East Exit", "A160", "A121", 0, 0, 0, 0 ],
+                             [ "Cave P East Exit", "A160", "A121", 0, 0, 64, 0 ],
                              [ "Cave Q West Exit", "A161", "A122", 0, 0, 0, 0 ],
-                             [ "Cave Q East Exit", "A162", "A123", 0, 0, 0, 0 ],
+                             [ "Cave Q East Exit", "A162", "A123", 0, 0, 64, 0 ],
                              [ "Cave R South Exit", "A163", "A124", 0, 0, 0, 0 ],
-                             [ "Cave R North Exit", "A164", "A125", 0, 0, 0, 0 ],
+                             [ "Cave R North Exit", "A164", "A125", 0, 0, 64, 0 ],
                              [ "Cave N South Exit", "A165", "A126", 0, 0, 0, 0 ],
-                             [ "Cave N North Exit", "A166", "A127", 0, 0, 0, 0 ],
+                             [ "Cave N North Exit", "A166", "A127", 0, 0, 64, 0 ],
                              [ "Hammer Cave", "A167", "A128", 0, 0, 0, 0 ],
                              [ "Elevator Cave G West Exit (Bottom left)", "A168", "A129", 0, 0, 0, 0 ],
-                             [ "Elevator Cave G East Exit (Bottom right)", "A169", "A12A", 0, 0, 0, 0 ],
-                             [ "Elevator Cave G West Exit (Top left)", "A16A", "A12B", 0, 0, 0, 0 ],
-                             [ "Elevator Cave G East Exit (Top Right)", "A16B", "A12C", 0, 0, 0, 0 ],
+                             [ "Elevator Cave G East Exit (Bottom right)", "A169", "A12A", 0, 0, 64, 0 ],
+                             [ "Elevator Cave G West Exit (Top left)", "A16A", "A12B", 0, 0, 128, 0 ],
+                             [ "Elevator Cave G East Exit (Top Right)", "A16B", "A12C", 0, 0, 192, 0 ],
                              [ "Elevator Cave H West Exit (Top left)", "A16C", "A12D", 0, 0, 0, 0 ],
-                             [ "Elevator Cave H East Exit (Top Right)", "A16D", "A12E", 0, 0, 0, 0 ],
-                             [ "Elevator Cave H North Exit (Bottom left)", "A16E", "A12F", 0, 0, 0, 0 ],
-                             [ "Elevator Cave H South Exit (Bottom right)", "A16F", "A130", 0, 0, 0, 0 ],
+                             [ "Elevator Cave H East Exit (Top Right)", "A16D", "A12E", 0, 0, 64, 0 ],
+                             [ "Elevator Cave H North Exit (Bottom left)", "A16E", "A12F", 0, 0, 128, 0 ],
+                             [ "Elevator Cave H South Exit (Bottom right)", "A16F", "A130", 0, 0, 192, 0 ],
                              [ "Maze Island Forced Battle Scene 2", "A170", "A131", 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 1", "A171", "A132", 0, 0, 0, 0 ],
                              [ "Maze Island's Magic Container", "A172", "A133", 0, 0, 0, 0 ],
-                             [ "Bridge back to East Hyrule", "A173", "A134", 0, 0, 0, 0 ],
-                             [ "Cave A back to West Hyrule", "A175", "A136", 0, 0, 0, 0 ],
-                             [ "Cave K back to West Hyrule", "A176", "A137", 0, 0, 0, 0 ],
-                             [ "4th Palace", "A17F", "A140", 0, 0, 0, 0 ],
+                             [ "Bridge back to East Hyrule", "A173", "A134", 0, 0, 0, 128 ],
+                             [ "Cave A back to West Hyrule", "A175", "A136", 0, 0, 0, 128 ],
+                             [ "Cave K back to West Hyrule", "A176", "A137", 0, 0, 0, 128 ],
+                             [ "4th Palace", "A17F", "A140", 0, 0, 0, 128 ],
                              [ "Maze Island Child", "A182", "A143", 0, 0, 0, 0 ],
                              [ "Death Mountain's Magic Container", "A183", "A144", 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 3", "A184", "A145", 0, 0, 0, 0 ],
@@ -388,6 +395,10 @@ class Zelda2MapEdit:
                              [ "Maze Island Forced Battle Scene 5", "A187", "A148", 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 6", "A188", "A149", 0, 0, 0, 0 ]]
 
+        # Keep track of location to move
+        self.movelocation = "-1"
+        self.movelocationprevx = "-1"
+        self.movelocationprevy = "-1"
                             
     # End __init__
 
@@ -474,7 +485,6 @@ class Zelda2MapEdit:
                 showerror(title=Error, message="Unable to open file")
         # Open rom file
         try:
-            #handle = open(self.filename)
             handle = open(self.filename,"r+b")
         except IOError:
             print ("Cannot open file %s" % self.filename)
@@ -516,6 +526,7 @@ class Zelda2MapEdit:
              handle.seek(int(self.map0locations[i][2], 16))
              self.map0locations[i][4] = int(handle.read(1).encode("hex"), 16)
              
+        #     print self.map0locations[i][0],self.map0locations[i][3],self.map0locations[i][4],self.map0locations[i][5],self.map0locations[i][6]
         # Map 1 
         handle.seek(self.mapstart1)
         mapstring = ""
@@ -548,6 +559,7 @@ class Zelda2MapEdit:
              handle.seek(int(self.map1locations[i][2], 16))
              self.map1locations[i][4] = int(handle.read(1).encode("hex"), 16)
 
+             #print self.map1locations[i][0],self.map1locations[i][3],self.map1locations[i][4],self.map1locations[i][5],self.map1locations[i][6]
         # Map 2
         handle.seek(self.mapstart2)
         mapstring = ""
@@ -579,6 +591,7 @@ class Zelda2MapEdit:
              self.map2locations[i][3] = int(handle.read(1).encode("hex"), 16)
              handle.seek(int(self.map2locations[i][2], 16))
              self.map2locations[i][4] = int(handle.read(1).encode("hex"), 16)
+             print self.map2locations[i][0],self.map2locations[i][3],self.map2locations[i][4],self.map2locations[i][5],self.map2locations[i][6]
 
         # Map 3
         handle.seek(self.mapstart3)
@@ -656,6 +669,24 @@ class Zelda2MapEdit:
             handle.write(byte)
             i += 2
 
+        # Save locations map 0
+#        for i, _ in enumerate(self.map0locations):
+#            x = self.map0locations[i][3]-self.map0locations[i][5]
+#            y = self.map0locations[i][4]-self.map0locations[i][6]
+#            print "saving", self.map0locations[i][0], self.map0locations[i][1], self.map0locations[i][2], self.map0locations[i][3], self.map0locations[i][4], self.map0locations[i][5], self.map0locations[i][6]
+#            print "x:", x, "y:", y
+#            xa = hex(x)[2:].zfill(2)
+#            #xa = hex(x)[2:]
+#            xb = xa.decode("hex")
+#            ya = hex(y)[2:].zfill(2)
+#            #ya = hex(y)[2:]
+#            print "xa:", xa, "ya:", ya
+#            yb = ya.decode("hex")
+#            handle.seek(int(self.map0locations[i][1], 16))
+#            handle.write(xb) 
+#            handle.seek(int(self.map0locations[i][2], 16))
+#            handle.write(yb) 
+
         # Map 1
         mapstring = ""
         for y in range(self.mapsizey):
@@ -703,6 +734,8 @@ class Zelda2MapEdit:
             byte = byte.decode("hex")
             handle.write(byte)
             i += 2
+
+        
 
         handle.close()
 
@@ -790,12 +823,11 @@ class Zelda2MapEdit:
             locations = self.map3locations
 
         # loop over locations, print square around
-        # broken.. needs to add correct offset
         for l in locations:
             x = l[3]-l[5]
             y = l[4]-l[6]
-#            print "square at ", x, ",", y
-            self.canvas.create_rectangle((x*16)-1, ((y-30)*16)-1, (x*16+16)+1, ((y-30)*16+16)+1, outline="blue", width=2)
+            self.canvas.create_rectangle((x*16), ((y-30)*16), (x*16+16)-1, ((y-30)*16+16)-1, outline="blue", width=1)
+            #self.canvas.create_rectangle((x*16)-1, ((y-30)*16)-1, (x*16+16)+1, ((y-30)*16+16)+1, outline="blue", width=2)
 
 
     def drawmap(self):
@@ -855,10 +887,13 @@ class Zelda2MapEdit:
     def mousemove(self, event):
         if self.editenabled == 1:
             c = event.widget
+            # Position on canvas
             x, y = c.canvasx(event.x), c.canvasy(event.y)
+            # Calculate position on map
             x = int(self.round_down(x, 16))/16
             y = int(self.round_down(y, 16))/16
-            
+           
+            # Make sure we are inside borders of the map
             if x < self.mapsizex and x >= 0 and y < self.mapsizey and y >= 0:
                 # Y-axis seems to be offset with 30 on map compared to array
                 text = `self.currentmap[x][y]` + " (" + `x` + "," + `y+30` + ")"
@@ -873,7 +908,7 @@ class Zelda2MapEdit:
                     locations = self.map2locations
                 elif self.activemap == "Maze Island":
                     locations = self.map3locations
-               
+
                 self.locationlabeltext.set("")
                 for l in locations:
                     if l[3]-l[5] == x and l[4]-l[6] == y+30:
@@ -893,8 +928,8 @@ class Zelda2MapEdit:
             maparrayy = int(y)/16
 
             # .. and to this position to put the new terrain on the canvas
-            x = int(self.round_down(x, 16))
-            y = int(self.round_down(y, 16))
+            #x = int(self.round_down(x, 16))
+            #y = int(self.round_down(y, 16))
 
             # Update currentmap 
             self.currentmap[maparrayx][maparrayy] = self.selectedterrain
@@ -918,15 +953,89 @@ class Zelda2MapEdit:
                 text = `len(encmapstring)/2` + "/" + `self.origmapsize3`
             self.mapsizelabeltext.set(text)
 
-    def rightclick(self, event):
-        c = event.widget
-        # Clicked position on canvas ..
-        x, y = c.canvasx(event.x), c.canvasy(event.y)
+    def rightpress(self, event):
+        if self.editenabled == 1:
+            c = event.widget
+            # Mouse down coordinates
+            x, y = c.canvasx(event.x), c.canvasy(event.y)
 
-        # .. Relates to this position in the currentmap ..
-        maparrayx = int(x)/16
-        maparrayy = int(y)/16
-        print "rightclick", x, ",", y
+            # Calculate position on map
+            x = int(self.round_down(x, 16))/16
+            y = int(self.round_down(y, 16))/16
+            
+            # Make sure we are inside borders of the map
+            if x < self.mapsizex and x >= 0 and y < self.mapsizey and y >= 0:
+                #print "rightpress", x, ",", y+30
+                
+                # Find a location to move
+                if self.activemap == "West Hyrule":
+                    locations = self.map0locations
+                elif self.activemap == "Death Mountain":
+                    locations = self.map1locations
+                elif self.activemap == "East Hyrule":
+                    locations = self.map2locations
+                elif self.activemap == "Maze Island":
+                    locations = self.map3locations
+
+                for p, l in enumerate(locations):
+                    if l[3]-l[5] == x and l[4]-l[6] == y+30:
+                        #text = "Found:" + l[0] + " (" + `l[3]-l[5]` + "," + `l[4]-l[6]` + ") (offset by: " + `l[5]` + "," + `l[6]` + ")"
+                        #print text
+                        self.movelocation = p
+                        self.movelocationprevx = x
+                        self.movelocationprevy = y
+                        #print "Start move ", self.movelocation
+                        break
+
+    def rightmotion(self, event):
+        if self.editenabled == 1:
+            c = event.widget
+            # Mouse down coordinates
+            x, y = c.canvasx(event.x), c.canvasy(event.y)
+
+            # Calculate position on map
+            x = int(self.round_down(x, 16))/16
+            y = int(self.round_down(y, 16))/16
+            
+            # Make sure we are inside borders of the map, and we found a location to move
+            if x < self.mapsizex and x >= 0 and y < self.mapsizey and y >= 0 and self.movelocation >= 0:
+                #print "Moving", self.movelocation, "to", x, ",", y+30
+                self.drawtile(self.movelocationprevx,self.movelocationprevy)
+                self.canvas.create_rectangle((x*16), ((y)*16), (x*16+16)-1, ((y)*16+16)-1, outline="red", width=1)
+                self.movelocationprevx = x
+                self.movelocationprevy = y
+
+    def rightrelease(self, event):
+        if self.editenabled == 1:
+            c = event.widget
+            # Mouse down coordinates
+            x, y = c.canvasx(event.x), c.canvasy(event.y)
+
+            # Calculate position on map
+            x = int(self.round_down(x, 16))/16
+            y = int(self.round_down(y, 16))/16
+            
+            # Make sure we are inside borders of the map, and we found a location to move
+            if x < self.mapsizex and x >= 0 and y < self.mapsizey and y >= 0 and self.movelocation >= 0:
+                #print "Dropping", self.movelocation, "at", x, ",", y+30
+
+                # Update location
+                if self.activemap == "West Hyrule":
+                    locations = self.map0locations
+                elif self.activemap == "Death Mountain":
+                    locations = self.map1locations
+                elif self.activemap == "East Hyrule":
+                    locations = self.map2locations
+                elif self.activemap == "Maze Island":
+                    locations = self.map3locations
+
+                #print "Replacing", locations[int(self.movelocation)][3], "with", x+locations[int(self.movelocation)][5]
+                #print "Replacing", locations[int(self.movelocation)][4], "with", y+30+locations[int(self.movelocation)][6]
+                locations[self.movelocation][3] = x+locations[self.movelocation][5]
+                locations[self.movelocation][4] = y+30+locations[self.movelocation][6]
+
+                self.movelocation = -1 
+                self.drawmap()
 
     def round_down(self, num, divisor):
         return num - (num%divisor)
