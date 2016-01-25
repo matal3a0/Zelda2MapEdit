@@ -2,10 +2,13 @@
 A simple overworld editor for Zelda II - The Adventure of Link.
 Allows you to edit the four maps of the overworld.
 
+
 Tested on Python 2.7.10
 
 Limitations:
-  Only the type of terrain may be edited. Caves, palaces, towns etc. can only be moved on the map, but are not saved to the rom yet.
+  Moving a palace will probably break, since code for moving the mountain tile that is created after finishing a palace, is not implemented.
+
+  Moving Palace 6 and New Kasuto is not yet supported.
   
   Don't exceed the size (bytes) of the original map. Size is shown in the upper right corner. It may be possible to exceed a few bytes, but not too many, or the game will become corrupt. Due to a small difference in the encoding-algorithm compared to the original game, you will see that the suze is larger than the original already from the point you start editing.
   To keep the map size small, use up to 16 tiles of the same type in a row as much as possible, that will make the encoded map data smaller.
