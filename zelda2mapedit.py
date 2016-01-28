@@ -979,6 +979,9 @@ class Zelda2MapEdit:
             self.currentmap[maparrayx][maparrayy] = self.selectedterrain
             # Draw tile
             self.drawtile(maparrayx,maparrayy)
+            # Also draw locations over
+            self.drawlocations()
+
 
             # Calculate map size and update label
             mapstring = ""
