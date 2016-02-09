@@ -734,6 +734,30 @@ class Zelda2MapEdit:
             handle.seek(int(self.map1locations[i][2], 16))
             handle.write(ya)
 
+            # Save offset for palace locations
+            if self.map1locations[i][7] != 0:
+                offset_in_array = (self.map1locations[i][4]-self.map1locations[i][6]-30)*64+self.map1locations[i][3]
+                
+                offsetsum = 0
+                j = 0
+                bytecounter = 0
+                while j+1 < len(encodedstring):
+                    offsetsum += int(encodedstring[j], 16)+1
+                    j += 2
+                    bytecounter += 1
+                    if offsetsum == offset_in_array:
+                        # Offset base is 0x7C00 (31744)
+                        # Add offset to base, write as table at address
+                        offsetstring = hex(j/2+31744)[2:].zfill(2)
+                        byte1 = offsetstring[2:]
+                        byte2 = offsetstring[:2]
+                        byte1 = byte1.decode("hex")
+                        byte2 = byte2.decode("hex")
+                        handle.seek(int(self.map1locations[i][7], 16))
+                        handle.write(byte1)
+                        handle.write(byte2)
+                        break
+
         # Map 2
         mapstring = ""
         for y in range(self.mapsizey):
@@ -760,6 +784,31 @@ class Zelda2MapEdit:
             handle.write(xa) 
             handle.seek(int(self.map2locations[i][2], 16))
             handle.write(ya)
+
+            # Save offset for palace locations
+            if self.map2locations[i][7] != 0:
+                offset_in_array = (self.map2locations[i][4]-self.map2locations[i][6]-30)*64+self.map2locations[i][3]
+                
+                offsetsum = 0
+                j = 0
+                bytecounter = 0
+                while j+1 < len(encodedstring):
+                    offsetsum += int(encodedstring[j], 16)+1
+                    j += 2
+                    bytecounter += 1
+                    if offsetsum == offset_in_array:
+                        # Offset base is 0x7C00 (31744)
+                        # Add offset to base, write as table at address
+                        offsetstring = hex(j/2+31744)[2:].zfill(2)
+                        byte1 = offsetstring[2:]
+                        byte2 = offsetstring[:2]
+                        byte1 = byte1.decode("hex")
+                        byte2 = byte2.decode("hex")
+                        handle.seek(int(self.map2locations[i][7], 16))
+                        handle.write(byte1)
+                        handle.write(byte2)
+                        break
+
 
         # Map 3
         mapstring = ""
@@ -788,6 +837,32 @@ class Zelda2MapEdit:
             handle.write(xa) 
             handle.seek(int(self.map3locations[i][2], 16))
             handle.write(ya)
+
+
+            # Save offset for palace locations
+            if self.map3locations[i][7] != 0:
+                offset_in_array = (self.map3locations[i][4]-self.map3locations[i][6]-30)*64+self.map3locations[i][3]
+                
+                offsetsum = 0
+                j = 0
+                bytecounter = 0
+                while j+1 < len(encodedstring):
+                    offsetsum += int(encodedstring[j], 16)+1
+                    j += 2
+                    bytecounter += 1
+                    if offsetsum == offset_in_array:
+                        # Offset base is 0x7C00 (31744)
+                        # Add offset to base, write as table at address
+                        offsetstring = hex(j/2+31744)[2:].zfill(2)
+                        byte1 = offsetstring[2:]
+                        byte2 = offsetstring[:2]
+                        byte1 = byte1.decode("hex")
+                        byte2 = byte2.decode("hex")
+                        handle.seek(int(self.map3locations[i][7], 16))
+                        handle.write(byte1)
+                        handle.write(byte2)
+                        break
+
 
         handle.close()
 
