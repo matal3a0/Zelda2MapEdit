@@ -4,11 +4,10 @@ Allows you to edit the four maps of the overworld.
 
 Locations such as caves, towns can be moved by click and drag with right mouse button.
 
-
 Tested on Python 2.7.10
 
 Limitations:
-  Moving a palace will probably break, since code for moving the mountain tile that is created after finishing a palace, is not implemented.
+  Moving of palaces 1-5 is now supported.  
 
   Moving Palace 6 and New Kasuto is not yet supported. Saving a rom will most likely break these, and they have to be hexedited manually.
   
@@ -17,6 +16,8 @@ Limitations:
 
 
 Sources of information:
+Forum at romhacking.net
 http://datacrystal.romhacking.net/wiki/Zelda_II:_The_Adventure_of_Link:List_of_areas
 http://datacrystal.romhacking.net/wiki/Zelda_II:_The_Adventure_of_Link:ROM_map
+http://www.bwass.org/romhack/zelda2/
 
