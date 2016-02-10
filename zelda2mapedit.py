@@ -12,7 +12,7 @@ Version: 0.3.0
 
 from Tkinter import *
 from tkFileDialog import askopenfilename, asksaveasfile
-import sys
+import sys, tkMessageBox
 
 
 class Zelda2MapEdit:
@@ -154,9 +154,9 @@ class Zelda2MapEdit:
         self.mapmenu.add_command(label="Maze Island", command=lambda: self.changemap("Maze Island"))
         self.menubar.add_cascade(label="Map", menu=self.mapmenu)
 
-#        self.helpmenu = Menu(self.menubar, tearoff=0)
-#        self.helpmenu.add_command(label="About...", command=self.about())
-#        self.menubar.add_cascade(label="Help", menu=self.helpmenu)
+        self.helpmenu = Menu(self.menubar, tearoff=0)
+        self.helpmenu.add_command(label="About...", command=self.about)
+        self.menubar.add_cascade(label="Help", menu=self.helpmenu)
 
         self.master.config(menu=self.menubar)
 
@@ -404,6 +404,12 @@ class Zelda2MapEdit:
         self.movelocationprevy = "-1"
                             
     # End __init__
+
+    def about(self):
+        #tkMessageBox.showinfo("Zelda2MapEdit", "Zelda2MapEdit\nhttps://github.com/matal3a0/Zelda2MapEdit ")
+        aboutWindow = Toplevel(self.master)
+        Label(aboutWindow, text="Zelda2MapEdit - by matal3a0\n\nLatest source available from:\nhttps://github.com/matal3a0/Zelda2MapEdit").pack(padx=10, pady=10)
+        Button(aboutWindow, text="Close", command=aboutWindow.destroy).pack(pady=10)
 
     def selectterrain(self, terrain):
         # Raise buttons
