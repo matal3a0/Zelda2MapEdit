@@ -486,17 +486,17 @@ class Zelda2MapEdit:
         options['filetypes'] = [('Rom files', '.nes'), ('all files', '.*')]
         options['title'] = 'Open romfile'
 
+        # Open file dialog
         self.filename = askopenfilename(**options)
+        
+        # Open rom file
         if self.filename:
             try:
-                print self.filename
-            except:
-                showerror(title=Error, message="Unable to open file")
-        # Open rom file
-        try:
-            handle = open(self.filename,"r+b")
-        except IOError:
-            print ("Cannot open file %s" % self.filename)
+                handle = open(self.filename,"r+b")
+            except IOError:
+                print ("Cannot open file %s" % self.filename)
+        else:
+            return
 
         # Map 0 
         handle.seek(self.mapstart0)
