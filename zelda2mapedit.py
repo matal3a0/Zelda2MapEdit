@@ -494,7 +494,9 @@ class Zelda2MapEdit:
             try:
                 handle = open(self.filename,"r+b")
             except IOError:
-                print ("Cannot open file %s" % self.filename)
+                message = "Cannot open file %s" % self.filename
+                tkMessageBox.showerror("Cannot open file", message)
+                return
         else:
             return
 
