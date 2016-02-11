@@ -6,7 +6,7 @@ A simple overworld-editor for Zelda 2 - The Adventure of Link
 
 Author: Johan Björnell <johan@bjornell.se>
 
-Version: 0.3.0
+Version: 0.3.2
 
 """
 
@@ -399,9 +399,9 @@ class Zelda2MapEdit:
                              [ "Maze Island Forced Battle Scene 6", "A188", "A149", 0, 0, 0, 0, 0 ]]
 
         # Keep track of location to move
-        self.movelocation = "-1"
-        self.movelocationprevx = "-1"
-        self.movelocationprevy = "-1"
+        self.movelocation = -1
+        self.movelocationprevx = -1
+        self.movelocationprevy = -1
                             
     # End __init__
 
