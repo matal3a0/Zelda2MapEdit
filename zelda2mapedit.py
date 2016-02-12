@@ -1070,14 +1070,23 @@ class Zelda2MapEdit:
 
     def updatemapsizelabel(self,mapsize):
             if self.activemap == "West Hyrule":
-                text = `mapsize` + "/" + `self.origmapsize0`
+                origmapsize = self.origmapsize0
             elif self.activemap == "Death Mountain":
-                text = `mapsize` + "/" + `self.origmapsize1`
+                origmapsize = self.origmapsize1
             elif self.activemap == "East Hyrule":
-                text = `mapsize` + "/" + `self.origmapsize2`
+                origmapsize = self.origmapsize2
             elif self.activemap == "Maze Island":
-                text = `mapsize` + "/" + `self.origmapsize3`
+                origmapsize = self.origmapsize3
+                
+            text = `mapsize` + "/" + `origmapsize`
             self.mapsizelabeltext.set(text)
+
+            # Change to red if larger then originalmapsize
+            if mapsize > origmapsize:
+                self.mapsizelabel.config(fg="red")
+            else:
+                self.mapsizelabel.config(fg="black")
+
 
     def leftclick(self, event):
         if self.editenabled == 1:
