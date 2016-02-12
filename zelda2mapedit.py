@@ -22,6 +22,7 @@ class Zelda2MapEdit:
         ###  User interface
         self.master = master
         self.master.title("Zelda2MapEdit")
+        self.master.protocol("WM_DELETE_WINDOW", self.quit)
         maxw = 1040
         maxh = 1260
         self.master.maxsize(width=maxw, height=maxh)
@@ -197,6 +198,8 @@ class Zelda2MapEdit:
 
         # Enable edit after file open only
         self.editenabled = 0
+        # Ask to save if edited
+        self.edited = 0
 
         # Locations on map
         # Name, x address, y address, x offset, y offset, palace pointer address
@@ -406,7 +409,6 @@ class Zelda2MapEdit:
     # End __init__
 
     def about(self):
-        #tkMessageBox.showinfo("Zelda2MapEdit", "Zelda2MapEdit\nhttps://github.com/matal3a0/Zelda2MapEdit ")
         aboutWindow = Toplevel(self.master)
         Label(aboutWindow, text="Zelda2MapEdit - by matal3a0\n\nLatest source available from:\nhttps://github.com/matal3a0/Zelda2MapEdit").pack(padx=10, pady=10)
         Button(aboutWindow, text="Close", command=aboutWindow.destroy).pack(pady=10)
@@ -873,6 +875,7 @@ class Zelda2MapEdit:
 
 
         handle.close()
+        self.edited = 0
 
 
     def changemap(self, overworldmap):
@@ -1022,7 +1025,16 @@ class Zelda2MapEdit:
 
     def quit(self):
         # Save before exit?
-        self.master.quit()
+        if self.edited != 0:
+            result = tkMessageBox.askyesnocancel("Zelda2MapEdit", "Save before exit?") 
+            if result is True:
+                self.saveromfile()
+                self.master.destroy()
+            elif result is False:
+                self.master.destroy()
+        else:
+            self.master.destroy()
+
 
     def mousemove(self, event):
         if self.editenabled == 1:
@@ -1109,6 +1121,8 @@ class Zelda2MapEdit:
             mapsize = self.mapsizeinbytes()
             self.updatemapsizelabel(mapsize)
 
+            # Edited
+            self.edited = 1
 
     def rightpress(self, event):
         if self.editenabled == 1:
@@ -1191,6 +1205,7 @@ class Zelda2MapEdit:
 
                 self.movelocation = -1 
                 self.drawmap()
+                self.edited = 1
 
     def round_down(self, num, divisor):
         return num - (num%divisor)
