@@ -899,6 +899,11 @@ class Zelda2MapEdit:
 
         self.drawmap()
 
+        # Update sizelabel
+        mapsize = self.mapsizeinbytes()
+        self.updatemapsizelabel(mapsize)
+
+
 
     def mapencode(self, input_string):
         tilecount = 1
@@ -1051,6 +1056,28 @@ class Zelda2MapEdit:
                         self.locationlabeltext.set(text)
                         break
 
+    def mapsizeinbytes(self):
+            # Generate mapstring
+            mapstring = ""
+            for y in range(self.mapsizey):
+                for x in range(self.mapsizex):
+                    mapstring += str(self.currentmap[x][y])
+            # Encode it
+            encmapstring = self.mapencode(mapstring)
+
+            # Return length/2 (BBF332 = 3 bytes)
+            return len(encmapstring)/2
+
+    def updatemapsizelabel(self,mapsize):
+            if self.activemap == "West Hyrule":
+                text = `mapsize` + "/" + `self.origmapsize0`
+            elif self.activemap == "Death Mountain":
+                text = `mapsize` + "/" + `self.origmapsize1`
+            elif self.activemap == "East Hyrule":
+                text = `mapsize` + "/" + `self.origmapsize2`
+            elif self.activemap == "Maze Island":
+                text = `mapsize` + "/" + `self.origmapsize3`
+            self.mapsizelabeltext.set(text)
 
     def leftclick(self, event):
         if self.editenabled == 1:
@@ -1069,23 +1096,10 @@ class Zelda2MapEdit:
             # Also draw locations over tiles
             self.drawlocations()
 
-
             # Calculate map size and update label
-            mapstring = ""
-            for y in range(self.mapsizey):
-                for x in range(self.mapsizex):
-                    mapstring += str(self.currentmap[x][y])
-            encmapstring = self.mapencode(mapstring)
-        
-            if self.activemap == "West Hyrule":
-                text = `len(encmapstring)/2` + "/" + `self.origmapsize0`
-            elif self.activemap == "Death Mountain":
-                text = `len(encmapstring)/2` + "/" + `self.origmapsize1`
-            elif self.activemap == "East Hyrule":
-                text = `len(encmapstring)/2` + "/" + `self.origmapsize2`
-            elif self.activemap == "Maze Island":
-                text = `len(encmapstring)/2` + "/" + `self.origmapsize3`
-            self.mapsizelabeltext.set(text)
+            mapsize = self.mapsizeinbytes()
+            self.updatemapsizelabel(mapsize)
+
 
     def rightpress(self, event):
         if self.editenabled == 1:
