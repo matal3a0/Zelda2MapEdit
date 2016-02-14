@@ -6,7 +6,7 @@ A simple overworld-editor for Zelda 2 - The Adventure of Link
 
 Author: Johan Björnell <johan@bjornell.se>
 
-Version: 0.3.2
+Version: 0.3.4
 
 """
 
@@ -924,6 +924,8 @@ class Zelda2MapEdit:
             elif (tilecount == 16):
                 output_string += str(hex(tilecount-1)[2:])+prev
                 tilecount = 1
+                if (charcount > 63):
+                    charcount = 0
             elif (charcount > 63):
                 output_string += str(hex(tilecount-1)[2:])+prev
                 tilecount = 1
