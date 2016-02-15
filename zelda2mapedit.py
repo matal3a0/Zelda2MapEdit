@@ -168,10 +168,10 @@ class Zelda2MapEdit:
         self.mapsizey = 75
 
         # Original mapsize
-        self.origmapsize0 = 800 
-        self.origmapsize1 = 802
-        self.origmapsize2 = 793
-        self.origmapsize3 = 802
+        self.origmapsize0 = 801 
+        self.origmapsize1 = 803
+        self.origmapsize2 = 794
+        self.origmapsize3 = 803
 
         # Selected terrain to draw on map (0-f)
         self.selectedterrain = "c"
