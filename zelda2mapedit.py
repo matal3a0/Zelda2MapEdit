@@ -49,7 +49,13 @@ class Zelda2MapEdit:
         self.canvas.configure(scrollregion = (0, 0, 1024, 1200))
 
         # Call function leftclick when left click on canvas
-        self.canvas.bind("<Button 1>", self.leftclick)
+        #self.canvas.bind("<Button 1>", self.leftclick)
+        # Call function leftpress och left mouse button press on canvas
+        self.canvas.bind("<ButtonPress-1>", self.leftpress)
+        # Call function leftmotion when left mouse is down and mouse is moved on canvas
+        self.canvas.bind("<B1-Motion>", self.leftmotion)
+        # Call function leftrelease on left mouse button release on canvas
+        self.canvas.bind("<ButtonRelease-1>", self.leftrelease)
         # Call function rightpress on right mouse button press on canvas
         self.canvas.bind("<ButtonPress-3>", self.rightpress)
         # Call function rightmotion when right mouse is down and mouse is moved on canvas
@@ -1101,14 +1107,13 @@ class Zelda2MapEdit:
             else:
                 self.mapsizelabel.config(fg="black")
 
-
-    def leftclick(self, event):
+    def leftpress(self, event):
         if self.editenabled == 1:
             c = event.widget
-            # Clicked position on canvas ..
+            # Mouse down coordinates 
             x, y = c.canvasx(event.x), c.canvasy(event.y)
 
-            # .. Relates to this position in the currentmap ..
+            # Position in the currentmap
             maparrayx = int(x)/16
             maparrayy = int(y)/16
 
@@ -1116,29 +1121,40 @@ class Zelda2MapEdit:
             self.currentmap[maparrayx][maparrayy] = self.selectedterrain
             # Draw tile
             self.drawtile(maparrayx,maparrayy)
-            # Also draw locations over tiles
-            self.drawlocations()
-
-            # Calculate map size and update label
-            mapsize = self.mapsizeinbytes()
-            self.updatemapsizelabel(mapsize)
 
             # Edited
             self.edited = 1
 
+    def leftmotion(self, event):
+        if self.editenabled == 1:
+            c = event.widget
+            x, y = c.canvasx(event.x), c.canvasy(event.y)
+
+            maparrayx = int(x)/16
+            maparrayy = int(y)/16
+
+            self.currentmap[maparrayx][maparrayy] = self.selectedterrain
+            self.drawtile(maparrayx,maparrayy)
+            self.drawlocations()
+
+            self.edited = 1
+
+    def leftrelease(self, event):
+        if self.editenabled == 1:
+            # Calculate map size and update label
+            mapsize = self.mapsizeinbytes()
+            self.updatemapsizelabel(mapsize)
+
     def rightpress(self, event):
         if self.editenabled == 1:
             c = event.widget
-            # Mouse down coordinates
             x, y = c.canvasx(event.x), c.canvasy(event.y)
 
-            # Calculate position on map
             x = int(self.round_down(x, 16))/16
             y = int(self.round_down(y, 16))/16
             
             # Make sure we are inside borders of the map
             if x < self.mapsizex and x >= 0 and y < self.mapsizey and y >= 0:
-                #print "rightpress", x, ",", y+30
                 
                 # Find a location to move
                 if self.activemap == "West Hyrule":
@@ -1163,10 +1179,8 @@ class Zelda2MapEdit:
     def rightmotion(self, event):
         if self.editenabled == 1:
             c = event.widget
-            # Mouse down coordinates
             x, y = c.canvasx(event.x), c.canvasy(event.y)
 
-            # Calculate position on map
             x = int(self.round_down(x, 16))/16
             y = int(self.round_down(y, 16))/16
             
@@ -1181,10 +1195,8 @@ class Zelda2MapEdit:
     def rightrelease(self, event):
         if self.editenabled == 1:
             c = event.widget
-            # Mouse down coordinates
             x, y = c.canvasx(event.x), c.canvasy(event.y)
 
-            # Calculate position on map
             x = int(self.round_down(x, 16))/16
             y = int(self.round_down(y, 16))/16
             
