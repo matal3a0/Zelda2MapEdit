@@ -485,12 +485,17 @@ class Zelda2MapEdit:
             self.spiderbtn.config(relief=SUNKEN)
 
     def openromfile(self):
+        # Save before?
+        if self.edited != 0:
+            result = tkMessageBox.askyesnocancel("Zelda2MapEdit", "Save before opening new file?") 
+            if result is True:
+                self.saveromfile()
+
+        # Open file dialog
         options = {}
         options['defaultextension'] = '.nes'
         options['filetypes'] = [('Rom files', '.nes'), ('all files', '.*')]
         options['title'] = 'Open romfile'
-
-        # Open file dialog
         self.filename = askopenfilename(**options)
         
         # Open rom file
@@ -651,7 +656,8 @@ class Zelda2MapEdit:
         self.mapmenu.entryconfig("Maze Island", state="normal")
         self.filemenu.entryconfig("Save", state="normal")
 
-
+        # Not edited
+        self.edited = 0
 
     def saveromfile(self):
         # Save self.currentmap to correct self.maparray[0-3]
