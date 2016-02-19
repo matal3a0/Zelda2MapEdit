@@ -6,7 +6,7 @@ A simple overworld-editor for Zelda 2 - The Adventure of Link
 
 Author: Johan Björnell <johan@bjornell.se>
 
-Version: 0.3.4
+Version: 0.4.0
 
 """
 
@@ -48,21 +48,13 @@ class Zelda2MapEdit:
         self.master.grid_columnconfigure(0, weight=1)
         self.canvas.configure(scrollregion = (0, 0, 1024, 1200))
 
-        # Call function leftclick when left click on canvas
-        #self.canvas.bind("<Button 1>", self.leftclick)
-        # Call function leftpress och left mouse button press on canvas
+        # Bind mouse actions to functions
         self.canvas.bind("<ButtonPress-1>", self.leftpress)
-        # Call function leftmotion when left mouse is down and mouse is moved on canvas
         self.canvas.bind("<B1-Motion>", self.leftmotion)
-        # Call function leftrelease on left mouse button release on canvas
         self.canvas.bind("<ButtonRelease-1>", self.leftrelease)
-        # Call function rightpress on right mouse button press on canvas
         self.canvas.bind("<ButtonPress-3>", self.rightpress)
-        # Call function rightmotion when right mouse is down and mouse is moved on canvas
         self.canvas.bind("<B3-Motion>", self.rightmotion)
-        # Call function rightrelease on right mouse button release on canvas
         self.canvas.bind("<ButtonRelease-3>", self.rightrelease)
-        # Call function mousemove on mouse movement over canvas
         self.canvas.bind("<Motion>", self.mousemove)
 
         # Terrain images 
@@ -144,21 +136,25 @@ class Zelda2MapEdit:
         self.locationlabel = Label(self.labelFrame, textvariable=self.locationlabeltext)
         self.locationlabel.grid(row=0, column=0)
         
-
         # Menu
         self.menubar = Menu(self.master)
         self.filemenu = Menu(self.menubar, tearoff=0)
         self.filemenu.add_command(label="Open", command=self.openromfile)
         self.filemenu.add_command(label="Save", command=self.saveromfile)
+        self.filemenu.entryconfig("Save", state="disabled")
         self.filemenu.add_separator()
         self.filemenu.add_command(label="Exit", command=self.quit)
         self.menubar.add_cascade(label="File", menu=self.filemenu)
 
         self.mapmenu = Menu(self.menubar, tearoff=0)
         self.mapmenu.add_command(label="West Hyrule", command=lambda: self.changemap("West Hyrule"))
+        self.mapmenu.entryconfig("West Hyrule", state="disabled")
         self.mapmenu.add_command(label="Death Mountain", command=lambda: self.changemap("Death Mountain"))
+        self.mapmenu.entryconfig("Death Mountain", state="disabled")
         self.mapmenu.add_command(label="East Hyrule", command=lambda: self.changemap("East Hyrule"))
+        self.mapmenu.entryconfig("East Hyrule", state="disabled")
         self.mapmenu.add_command(label="Maze Island", command=lambda: self.changemap("Maze Island"))
+        self.mapmenu.entryconfig("Maze Island", state="disabled")
         self.menubar.add_cascade(label="Map", menu=self.mapmenu)
 
         self.helpmenu = Menu(self.menubar, tearoff=0)
@@ -167,7 +163,6 @@ class Zelda2MapEdit:
 
         self.master.config(menu=self.menubar)
 
-        
         ### Variables
         # Map size
         self.mapsizex = 64
@@ -352,6 +347,7 @@ class Zelda2MapEdit:
                              [ "Old Kasuto", "86A1", "8662", 0, 0, 64, 128, 0 ],
                              [ "5th Palace", "86A2", "8663", 0, 0, 0, 128, "879F" ],
                              # Not implemented (hidden) [ "6th Palace", "86A3", "8664", 0, 0, 0, 0, "87A1"],
+                             #[ "Hidden Palace spot, should always be 2 tiles north of palace 6", "4388", "4382", 0, 0, 0, 0, "87A1"],
                              [ "Great Palace", "86A4", "8665", 0, 0, 0, 128, 0 ]]
 
 
@@ -649,6 +645,13 @@ class Zelda2MapEdit:
 
         # Enable editing
         self.editenabled = 1
+        self.mapmenu.entryconfig("West Hyrule", state="normal")
+        self.mapmenu.entryconfig("Death Mountain", state="normal")
+        self.mapmenu.entryconfig("East Hyrule", state="normal")
+        self.mapmenu.entryconfig("Maze Island", state="normal")
+        self.filemenu.entryconfig("Save", state="normal")
+
+
 
     def saveromfile(self):
         # Save self.currentmap to correct self.maparray[0-3]
