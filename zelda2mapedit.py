@@ -1124,6 +1124,7 @@ class Zelda2MapEdit:
             self.currentmap[maparrayx][maparrayy] = self.selectedterrain
             # Draw tile
             self.drawtile(maparrayx,maparrayy)
+            self.drawlocations()
 
             # Edited
             self.edited = 1
