@@ -9,9 +9,10 @@ Locations such as caves, towns can be moved by click and drag with right mouse b
 Tested on Python 2.7.10
 
 Limitations:
-  Moving Palace 6 and New Kasuto is not yet supported. Saving a rom will most likely break these, and they have to be hexedited manually.
+  Moving Palace 6 and New Kasuto is not yet supported. Saving a rom will most likely break these, and they have to be hexedited manually. Make sure a single desert tile (04) exists at the location for Palace 6 and a single forest (06) exists at the location for New Kasuto. Then you should be ok.
   
-  Don't exceed the size (bytes) of the original map. Size is shown in the upper right corner. It may be possible to exceed a few bytes, but not too many, or the game will become corrupt. Due to a small difference in the encoding-algorithm compared to the original game, you will see that the size differs from the original already from the point you start editing.
+  Make sure the size (bytes) of your map matches the original map. Size is shown in the upper right corner. This is extra important in East Hyrule, otherwise you will experience shifting south of Palace 6. The other maps map be small. It may also be possible to exceed a few bytes, but not too many, or the game will become corrupt. 
+The encoding of the original game map is not optimal, so you will see that the size differs from the original already from the point you start editing.
   To keep the map size small, use up to 16 tiles of the same type in a row as much as possible, that will make the encoded map data smaller.
 
 
