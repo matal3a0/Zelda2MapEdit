@@ -149,8 +149,8 @@ class Zelda2MapEdit:
         self.mapmenu = Menu(self.menubar, tearoff=0)
         self.mapmenu.add_command(label="West Hyrule", command=lambda: self.changemap("West Hyrule"))
         self.mapmenu.entryconfig("West Hyrule", state="disabled")
-        self.mapmenu.add_command(label="Death b", command=lambda: self.changemap("Death b"))
-        self.mapmenu.entryconfig("Death b", state="disabled")
+        self.mapmenu.add_command(label="Death Mountain", command=lambda: self.changemap("Death Mountain"))
+        self.mapmenu.entryconfig("Death Mountain", state="disabled")
         self.mapmenu.add_command(label="East Hyrule", command=lambda: self.changemap("East Hyrule"))
         self.mapmenu.entryconfig("East Hyrule", state="disabled")
         self.mapmenu.add_command(label="Maze Island", command=lambda: self.changemap("Maze Island"))
@@ -194,7 +194,7 @@ class Zelda2MapEdit:
 
         # Map data locations in ROM
         self.mapstart0 = int("506C", 16) # West Hyrule
-        self.mapstart1 = int("665C", 16) # Death b
+        self.mapstart1 = int("665C", 16) # Death Mountain
         self.mapstart2 = int("9056", 16) # East Hyrule
         self.mapstart3 = int("A65C", 16) # Maze Island
 
@@ -248,8 +248,8 @@ class Zelda2MapEdit:
                              [ "Extra Red Magic Jar on beach (not used in original game)", "468D", "464E", 0, 0, 0, 0, 0 ],
                              [ "Life doll on beach", "468E", "464F", 0, 0, 0, 0, 0 ],
                              [ "Raft Dock to East Hyrule", "4697", "4658", 0, 0, 0, 128, 0 ],
-                             [ "1 entrance to Death b", "4698", "4659", 0, 0, 0, 128, 0 ],
-                             [ "1 exit to Death b", "4699", "465A", 0, 0, 0, 128, 0 ],
+                             [ "1 entrance to Death Mountain", "4698", "4659", 0, 0, 0, 128, 0 ],
+                             [ "1 exit to Death Mountain", "4699", "465A", 0, 0, 0, 128, 0 ],
                              [ "King's Tomb", "469A", "465B", 0, 0, 0, 128, 0 ],
                              [ "Rauru", "469B", "465C", 0, 0, 64, 128, 0 ],
                              [ "Ruto", "469D", "465E", 0, 0, 64, 128, 0 ],
@@ -305,9 +305,9 @@ class Zelda2MapEdit:
                              [ "3 back to East Hyrule", "6173", "6134", 0, 0, 0, 128, 0 ],
                              [ "1 A back to West Hyrule", "6175", "6136", 0, 0, 0, 128, 0 ],
                              [ "1 K back to West Hyrule", "6176", "6137", 0, 0, 0, 128, 0 ],
-                             [ "Maze 2 in Death b", "617F", "6140", 0, 0, 0, 128, "47A5" ],
+                             [ "Maze 2 in Death Mountain", "617F", "6140", 0, 0, 0, 128, "47A5" ],
                              [ "Maze Island Child", "6182", "6143", 0, 0, 0, 0, 0 ],
-                             [ "Death b's Magic Container", "6183", "6144", 0, 0, 0, 0, 0 ],
+                             [ "Death Mountain's Magic Container", "6183", "6144", 0, 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 3", "6184", "6145", 0, 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 7", "6185", "6146", 0, 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 4", "6186", "6147", 0, 0, 0, 0, 0 ],
@@ -406,7 +406,7 @@ class Zelda2MapEdit:
                              [ "1 K back to West Hyrule", "A176", "A137", 0, 0, 0, 128, 0 ],
                              [ "Maze 2 in Maze Island", "A17F", "A140", 0, 0, 0, 128, "87A7" ],
                              [ "Maze Island Child", "A182", "A143", 0, 0, 0, 0, 0 ],
-                             [ "Death b's Magic Container", "A183", "A144", 0, 0, 0, 0, 0 ],
+                             [ "Death Mountain's Magic Container", "A183", "A144", 0, 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 3", "A184", "A145", 0, 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 7", "A185", "A146", 0, 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 4", "A186", "A147", 0, 0, 0, 0, 0 ],
@@ -654,7 +654,7 @@ class Zelda2MapEdit:
         # Enable editing
         self.editenabled = 1
         self.mapmenu.entryconfig("West Hyrule", state="normal")
-        self.mapmenu.entryconfig("Death b", state="normal")
+        self.mapmenu.entryconfig("Death Mountain", state="normal")
         self.mapmenu.entryconfig("East Hyrule", state="normal")
         self.mapmenu.entryconfig("Maze Island", state="normal")
         self.filemenu.entryconfig("Save", state="normal")
@@ -666,7 +666,7 @@ class Zelda2MapEdit:
         # Save self.currentmap to correct self.maparray[0-3]
         if self.activemap == "West Hyrule":
             self.maparray0 = self.currentmap[:]
-        elif self.activemap == "Death b":
+        elif self.activemap == "Death Mountain":
             self.maparray1 = self.currentmap[:]
         elif self.activemap == "East Hyrule":
             self.maparray2 = self.currentmap[:]
@@ -900,7 +900,7 @@ class Zelda2MapEdit:
         # Put currentmap back to original self.maparray
         if self.activemap == "West Hyrule":
             self.maparray0 = self.currentmap[:]
-        elif self.activemap == "Death b":
+        elif self.activemap == "Death Mountain":
             self.maparray1 = self.currentmap[:]
         elif self.activemap == "East Hyrule":
             self.maparray2 = self.currentmap[:]
@@ -911,7 +911,7 @@ class Zelda2MapEdit:
         # Put data for overworldmap in currentmap
         if overworldmap == "West Hyrule":
             self.currentmap = self.maparray0[:]
-        elif overworldmap == "Death b":
+        elif overworldmap == "Death Mountain":
             self.currentmap = self.maparray1[:]
         elif overworldmap == "East Hyrule":
             self.currentmap = self.maparray2[:]
@@ -978,7 +978,7 @@ class Zelda2MapEdit:
     def drawlocations(self):
         if self.activemap == "West Hyrule":
             locations = self.map0locations
-        elif self.activemap == "Death b":
+        elif self.activemap == "Death Mountain":
             locations = self.map1locations
         elif self.activemap == "East Hyrule":
             locations = self.map2locations
@@ -1103,7 +1103,7 @@ class Zelda2MapEdit:
     def updatemapsizelabel(self,mapsize):
             if self.activemap == "West Hyrule":
                 origmapsize = self.origmapsize0
-            elif self.activemap == "Death b":
+            elif self.activemap == "Death Mountain":
                 origmapsize = self.origmapsize1
             elif self.activemap == "East Hyrule":
                 origmapsize = self.origmapsize2
@@ -1180,7 +1180,7 @@ class Zelda2MapEdit:
                 # Find a location to move
                 if self.activemap == "West Hyrule":
                     locations = self.map0locations
-                elif self.activemap == "Death b":
+                elif self.activemap == "Death Mountain":
                     locations = self.map1locations
                 elif self.activemap == "East Hyrule":
                     locations = self.map2locations
