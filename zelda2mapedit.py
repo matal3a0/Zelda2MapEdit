@@ -210,7 +210,7 @@ class Zelda2MapEdit:
         # Name, x address, y address, x offset, y offset, palace pointer address
         # West Hyrule
 
-        self.map0locations = [[ "North Castle", "466E", "462F", 0, 0, 0, 0 ],
+        self.maplocations = [[ "North Castle", "466E", "462F", 0, 0, 0, 0 ],
                              [ "Trophy cave", "466F", "4630", 0, 0, 0, 0 ],
                              [ "Forest with 50 exp. bag and Aches", "4670", "4631", 0, 0, 0, 0 ],
                              [ "1st Magic Container cave", "4671", "4632", 0, 0, 0, 0 ],
@@ -255,9 +255,8 @@ class Zelda2MapEdit:
                              [ "Mido", "46A1", "4662", 0, 0, 64, 128 ],
                              [ "Parapa Palace", "46A2", "4663", 0, 0, 0, 128 ],
                              [ "Swamp Palace", "46A3", "4664", 0, 0, 0, 128 ],
-                             [ "Island Palace", "46A4", "4665", 0, 0, 0, 128 ]]
-
-        self.map1locations = [[ "Cave B West Exit", "614B", "610C", 0, 0, 0, 0 ],
+                             [ "Island Palace", "46A4", "4665", 0, 0, 0, 128 ],
+                             [ "Cave B West Exit", "614B", "610C", 0, 0, 0, 0 ],
                              [ "Cave B East Exit", "614C", "610D", 0, 0, 64, 0],
                              [ "Cave C West Exit", "614D", "610E", 0, 0, 0, 0 ],
                              [ "Cave C East Exit", "614E", "610F", 0, 0, 64, 0 ],
@@ -307,9 +306,8 @@ class Zelda2MapEdit:
                              [ "Maze Island Forced Battle Scene 7", "6185", "6146", 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 4", "6186", "6147", 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 5", "6187", "6148", 0, 0, 0, 0 ],
-                             [ "Maze Island Forced Battle Scene 6", "6188", "6149", 0, 0, 0, 0 ]]
-
-        self.map2locations = [[ "Forest with 500 Exp. bag west of Nabooru", "866E", "862F", 0, 0, 0, 0 ],
+                             [ "Maze Island Forced Battle Scene 6", "6188", "6149", 0, 0, 0, 0 ],
+                             [ "Forest with 500 Exp. bag west of Nabooru", "866E", "862F", 0, 0, 0, 0 ],
                              [ "Forest with 500 Exp. bag north of 3-Eye Rock", "866F", "8630", 0, 0, 0, 0 ],
                              [ "1st Forced battle scene after River Devil", "8670", "8631", 0, 0, 0, 0 ],
                              [ "2nd Forced battle scene after River Devil", "8671", "8632", 0, 0, 0, 0 ],
@@ -350,9 +348,8 @@ class Zelda2MapEdit:
                              [ "Old Kasuto", "86A1", "8662", 0, 0, 64, 128 ],
                              [ "5th Palace", "86A2", "8663", 0, 0, 0, 128 ],
                              [ "6th Palace **", "86A3", "8664", 0, 0, 0, 0 ],
-                             [ "Great Palace", "86A4", "8665", 0, 0, 0, 128 ]]
-
-        self.map3locations = [[ "Cave B West Exit", "A14B", "A10C", 0, 0, 0, 0 ],
+                             [ "Great Palace", "86A4", "8665", 0, 0, 0, 128 ],
+                             [ "Cave B West Exit", "A14B", "A10C", 0, 0, 0, 0 ],
                              [ "Cave B East Exit", "A14C", "A10D", 0, 0, 64, 0 ],
                              [ "Cave C West Exit", "A14D", "A10E", 0, 0, 0, 0 ],
                              [ "Cave C East Exit", "A14E", "A10F", 0, 0, 64, 0 ],
@@ -403,8 +400,6 @@ class Zelda2MapEdit:
                              [ "Maze Island Forced Battle Scene 4", "A186", "A147", 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 5", "A187", "A148", 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 6", "A188", "A149", 0, 0, 0, 0 ]]
-
-
 
         # Keep track of location to move
         self.movelocation = -1
@@ -536,11 +531,11 @@ class Zelda2MapEdit:
                     break
         
         # Read locations
-        for i, _ in enumerate(self.map0locations):
-            handle.seek(int(self.map0locations[i][1], 16))
-            self.map0locations[i][3] = int(handle.read(1).encode("hex"), 16)
-            handle.seek(int(self.map0locations[i][2], 16))
-            self.map0locations[i][4] = int(handle.read(1).encode("hex"), 16)
+        for i, _ in enumerate(self.maplocations):
+            handle.seek(int(self.maplocations[i][1], 16))
+            self.maplocations[i][3] = int(handle.read(1).encode("hex"), 16)
+            handle.seek(int(self.maplocations[i][2], 16))
+            self.maplocations[i][4] = int(handle.read(1).encode("hex"), 16)
 
         # Close file
         handle.close()
@@ -639,29 +634,6 @@ class Zelda2MapEdit:
         mapsize = self.mapsizeinbytes()
         self.updatemapsizelabel(mapsize)
         
-        # Put currentmap back to original self.maparray
-        #if self.activemap == "West Hyrule":
-        #    self.maparray0 = self.currentmap[:]
-        #elif self.activemap == "Death Mountain":
-        #    self.maparray1 = self.currentmap[:]
-        #elif self.activemap == "East Hyrule":
-        #    self.maparray2 = self.currentmap[:]
-        #elif self.activemap == "Maze Island":
-        #    self.maparray3 = self.currentmap[:]
-
-        # Put data for overworldmap in currentmap
-        #if overworldmap == "West Hyrule":
-        #    self.currentmap = self.maparray0[:]
-        #elif overworldmap == "Death Mountain":
-        #    self.currentmap = self.maparray1[:]
-        #elif overworldmap == "East Hyrule":
-        #    self.currentmap = self.maparray2[:]
-        #elif overworldmap == "Maze Island":
-        #    self.currentmap = self.maparray3[:]
-
-
-
-
     def mapencode(self, input_string):
         tilecount = 1
         charcount = 0 # Encoding must stop at 64 tiles per line of map
@@ -713,14 +685,13 @@ class Zelda2MapEdit:
 
     def drawlocations(self):
         if self.activemap == 0:
-            locations = self.map0locations
+            locations = self.maplocations[:46]
         elif self.activemap == 1:
-            locations = self.map1locations
+            locations = self.maplocations[46:97]
         elif self.activemap == 2:
-            locations = self.map2locations
+            locations = self.maplocations[97:139]
         elif self.activemap == 3:
-            locations = self.map3locations
-
+            locations = self.maplocations[139:]
 
         # loop over locations, print square around
         for l in locations:
@@ -812,13 +783,13 @@ class Zelda2MapEdit:
     
                 # Print location under cursor
                 if self.activemap == 0:
-                    locations = self.map0locations
+                    locations = self.maplocations[:46]
                 elif self.activemap == 1:
-                    locations = self.map1locations
+                    locations = self.maplocations[46:97]
                 elif self.activemap == 2:
-                    locations = self.map2locations
+                    locations = self.maplocations[97:139]
                 elif self.activemap == 3:
-                    locations = self.map3locations
+                        locations = self.maplocations[139:]
 
                 self.locationlabeltext.set("")
                 for l in locations:
@@ -916,13 +887,13 @@ class Zelda2MapEdit:
                 
                 # Find a location to move
                 if self.activemap == 0:
-                    locations = self.map0locations
+                    locations = self.maplocations[:46]
                 elif self.activemap == 1:
-                    locations = self.map1locations
+                    locations = self.maplocations[46:97]
                 elif self.activemap == 2:
-                    locations = self.map2locations
+                    locations = self.maplocations[97:139]
                 elif self.activemap == 3:
-                    locations = self.map3locations
+                    locations = self.maplocations[139:]
 
                 for p, l in enumerate(locations):
                     if l[3]-l[5] == x and l[4]-l[6] == y+30:
@@ -964,13 +935,13 @@ class Zelda2MapEdit:
 
                 # Update location
                 if self.activemap == 0:
-                    locations = self.map0locations
+                    locations = self.maplocations[:46]
                 elif self.activemap == 1:
-                    locations = self.map1locations
+                    locations = self.maplocations[46:97]
                 elif self.activemap == 2:
-                    locations = self.map2locations
+                    locations = self.maplocations[97:139]
                 elif self.activemap == 3:
-                    locations = self.map3locations
+                    locations = self.maplocations[139:]
 
                 locations[self.movelocation][3] = x+locations[self.movelocation][5]
                 locations[self.movelocation][4] = y+30+locations[self.movelocation][6]
