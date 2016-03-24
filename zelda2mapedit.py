@@ -201,8 +201,8 @@ class Zelda2MapEdit:
         # Ask to save if edited
         self.edited = 0
 
-        # List of breakpoints
-        self.breakpoints = []
+        # List of list of breakpoints
+        self.breakpoints = [ [], [], [], [] ]
 
         # Palace 2 and 6 hidden or visible
         # (not implemented yet)
@@ -695,7 +695,7 @@ class Zelda2MapEdit:
         for l in locations:
             x = l[3]-l[5]
             y = l[4]-l[6]
-            self.canvas.create_rectangle((x*16), ((y-30)*16), (x*16+16)-1, ((y-30)*16+16)-1, outline="blue", width=1)
+            self.canvas.create_rectangle((x*16), ((y-30)*16), (x*16+16)-1, ((y-30)*16+16)-1, outline="blue", width=2)
             #self.canvas.create_rectangle((x*16)-1, ((y-30)*16)-1, (x*16+16)+1, ((y-30)*16+16)+1, outline="blue", width=2)
 
 
@@ -712,6 +712,7 @@ class Zelda2MapEdit:
                     canvasposy+= 1
 
         self.drawlocations()
+        self.drawbreakpoints()
 
     def drawtile(self, x, y):
         offset = self.activemap
@@ -750,6 +751,14 @@ class Zelda2MapEdit:
             self.canvas.create_image(x*16,y*16, anchor=NW, image=self.img_f)
         else:
             self.canvas.create_image(x*16,y*16, anchor=NW, image=self.error_img)
+
+    def drawbreakpoints(self):
+        for b in self.breakpoints[self.activemap]:
+            x = b[0]
+            y = b[1]
+            self.canvas.create_line((x*16)+16, (y*16), (x*16)+16, (y*16)+16, fill="red", width=2)
+            self.canvas.create_line((x*16)+13, (y*16), (x*16)+19, (y*16), fill="red", width=2)
+            self.canvas.create_line((x*16)+13, (y*16)+16, (x*16)+19, (y*16)+16, fill="red", width=2)
 
     def quit(self):
         # Save before exit?
@@ -838,12 +847,14 @@ class Zelda2MapEdit:
             if self.selectedterrain == 'x':
                 #Toggle breakpoint at location
                 self.togglebreakpoint(maparraybreakpointx, maparrayy)
+                self.drawbreakpoints()
             else:
                 # Update tile
                 self.maparray[maparrayx][maparrayy+yoffset] = self.selectedterrain
                 # Draw tile
                 self.drawtile(maparrayx,maparrayy)
                 self.drawlocations()
+                self.drawbreakpoints()
 
             # Edited
             self.edited = 1
@@ -862,6 +873,7 @@ class Zelda2MapEdit:
                 self.maparray[maparrayx][maparrayy+yoffset] = self.selectedterrain
                 self.drawtile(maparrayx,maparrayy)
                 self.drawlocations()
+                self.drawbreakpoints()
 
                 self.edited = 1
 
@@ -952,14 +964,12 @@ class Zelda2MapEdit:
     def togglebreakpoint(self, x, y):
         breakpoint = [x,y]
         #If breakpoint already exists at location, remove it. Otherwise add breakpoint
-        if breakpoint in self.breakpoints:
-            self.breakpoints.remove(breakpoint) 
+        if breakpoint in self.breakpoints[self.activemap]:
+            self.breakpoints[self.activemap].remove(breakpoint) 
         else:
-            self.breakpoints.append(breakpoint)
+            self.breakpoints[self.activemap].append(breakpoint)
+        #print self.breakpoints
                  
-    def drawbreakpoints(self):
-        print ""
-        #dummy
 
 # End Class 
 
