@@ -695,7 +695,7 @@ class Zelda2MapEdit:
         for l in locations:
             x = l[3]-l[5]
             y = l[4]-l[6]
-            self.canvas.create_rectangle((x*16), ((y-30)*16), (x*16+16)-1, ((y-30)*16+16)-1, outline="blue", width=2)
+            self.canvas.create_rectangle((x*16), ((y-30)*16), (x*16+16)-1, ((y-30)*16+16)-1, outline="blue", width=1)
             #self.canvas.create_rectangle((x*16)-1, ((y-30)*16)-1, (x*16+16)+1, ((y-30)*16+16)+1, outline="blue", width=2)
 
 
@@ -756,9 +756,9 @@ class Zelda2MapEdit:
         for b in self.breakpoints[self.activemap]:
             x = b[0]
             y = b[1]
-            self.canvas.create_line((x*16)+16, (y*16), (x*16)+16, (y*16)+16, fill="red", width=2)
-            self.canvas.create_line((x*16)+13, (y*16), (x*16)+19, (y*16), fill="red", width=2)
-            self.canvas.create_line((x*16)+13, (y*16)+16, (x*16)+19, (y*16)+16, fill="red", width=2)
+            self.canvas.create_line((x*16)+16, (y*16), (x*16)+16, (y*16)+16, fill="red", width=1)
+            #self.canvas.create_line((x*16)+13, (y*16), (x*16)+19, (y*16), fill="red", width=1)
+            #self.canvas.create_line((x*16)+13, (y*16)+16, (x*16)+19, (y*16)+16, fill="red", width=1)
 
     def quit(self):
         # Save before exit?
@@ -847,14 +847,15 @@ class Zelda2MapEdit:
             if self.selectedterrain == 'x':
                 #Toggle breakpoint at location
                 self.togglebreakpoint(maparraybreakpointx, maparrayy)
-                self.drawbreakpoints()
             else:
                 # Update tile
                 self.maparray[maparrayx][maparrayy+yoffset] = self.selectedterrain
-                # Draw tile
-                self.drawtile(maparrayx,maparrayy)
-                self.drawlocations()
-                self.drawbreakpoints()
+
+            # Draw tile
+            self.drawtile(maparrayx,maparrayy)
+            self.drawtile(maparrayx+1,maparrayy)
+            self.drawlocations()
+            self.drawbreakpoints()
 
             # Edited
             self.edited = 1
@@ -905,12 +906,9 @@ class Zelda2MapEdit:
 
                 for p, l in enumerate(locations):
                     if l[3]-l[5] == x and l[4]-l[6] == y+30:
-                        #text = "Found:" + l[0] + " (" + `l[3]-l[5]` + "," + `l[4]-l[6]` + ") (offset by: " + `l[5]` + "," + `l[6]` + ")"
-                        #print text
                         self.movelocation = p
                         self.movelocationprevx = x
                         self.movelocationprevy = y
-                        #print "Start move ", self.movelocation
                         break
 
     def rightmotion(self, event):
@@ -923,7 +921,6 @@ class Zelda2MapEdit:
             
             # Make sure we are inside borders of the map, and we found a location to move
             if x < self.mapsizex and x >= 0 and y < self.mapsizey and y >= 0 and self.movelocation >= 0:
-                #print "Moving", self.movelocation, "to", x, ",", y+30
                 self.drawtile(self.movelocationprevx,self.movelocationprevy)
                 self.canvas.create_rectangle((x*16), ((y)*16), (x*16+16)-1, ((y)*16+16)-1, outline="red", width=1)
                 self.movelocationprevx = x
@@ -939,8 +936,6 @@ class Zelda2MapEdit:
             
             # Make sure we are inside borders of the map, and we found a location to move
             if x < self.mapsizex and x >= 0 and y < self.mapsizey and y >= 0 and self.movelocation >= 0:
-                #print "Dropping", self.movelocation, "at", x, ",", y+30
-
                 # Update location
                 if self.activemap == 0:
                     locations = self.maplocations[:46]
