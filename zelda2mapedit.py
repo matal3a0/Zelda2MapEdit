@@ -503,13 +503,20 @@ class Zelda2MapEdit:
                 return
         else:
             return
+        # Clean breakpoints
+        self.breakpoints = [ [], [], [], [] ]
 
         # Loop over the four startlocations in rom
         for index, maplocation in enumerate(self.mapstartlocations):
             yoffset = index*self.mapsizey # Offset in maparray depending on which map
             handle.seek(maplocation)
             # Read a byte at a time, decode to mapstring, until size == mapsizex*mapsizey
+            # Also find breakpoints in map
             mapstring = ""
+            prevterrain = ""
+            prevcount = ""
+            xcount = 0
+            ycount = 0
             while len(mapstring) < self.mapsizex*self.mapsizey:
                 rawmapdata = handle.read(1)
                 # Convert rawmapdata to string 
@@ -517,11 +524,28 @@ class Zelda2MapEdit:
                 # Calculate map data
                 terraintype = strmapdata[1]
                 terraincount = int(strmapdata[0], 16)+1
+                # Keep track of coordinates in map 
+                xcount += terraincount
+                if xcount == 64:
+                    xcount = 0
+                    ycount += 1
 
                 # Add to output_string
                 for x in range(terraincount):
                     mapstring += terraintype
-    
+
+                # Find breakpoints 
+                # A breakpoint can be identified by two bytes of the same terrain
+                # and the the counting-part of the previous byte is not 16.
+                # Also check that we are not on the edge of the map,
+                # the encoding algorithm will place those breakpoints automatically
+                if terraintype == prevterrain and prevcount != 16 and xcount-terraincount-1 >= 0: 
+                    #sys.stdout.write("breakpoint! "+str(hex(prevcount-1)[2:])+str(prevterrain)+" "+str(hex(terraincount-1)[2:])+str(terraintype)+" "+str(xcount)+","+str(ycount)+"\n")
+                    bp = [ xcount-terraincount, ycount ]
+                    self.breakpoints[index].append(bp)
+                prevterrain = terraintype
+                prevcount = terraincount
+
             # Populate maparray with the decoded string
             y = 0+yoffset 
             x = 0
@@ -559,6 +583,8 @@ class Zelda2MapEdit:
         self.edited = 0
 
     def saveromfile(self):
+        currentactivemap = self.activemap
+
         # open file handle in write binary mode
         try:
             handle = open(self.filename, "r+b")
@@ -567,6 +593,7 @@ class Zelda2MapEdit:
 
         # Loop over the four startlocations in rom
         for index, maplocation in enumerate(self.mapstartlocations):
+            self.activemap = index
             yoffset = index*self.mapsizey # Offset in maparray depending on which map
 
             # Convert maparray to encoded string and save to correct location in romfile
@@ -626,6 +653,7 @@ class Zelda2MapEdit:
 
         handle.close()
         self.edited = 0
+        self.activemap = currentactivemap
 
     def changemap(self, mapnumber):
         self.activemap = mapnumber
@@ -636,49 +664,41 @@ class Zelda2MapEdit:
         self.updatemapsizelabel(mapsize)
         
     def mapencode(self, input_string):
+        ycount = 0
+        xcount = 0 # Encoding must stop at 64 tiles per line of map
         tilecount = 1
-        charcount = 0 # Encoding must stop at 64 tiles per line of map
         prev = ''
         output_string = ""
         for character in input_string:
+            pos = [xcount,ycount]
             if character != prev:
                 if prev:
                     output_string += str(hex(tilecount-1)[2:])+prev
                 tilecount = 1
                 prev = character
-                if (charcount > 63):
-                    charcount = 0
+                if (xcount > 63):
+                    xcount = 0
+                    ycount += 1
             elif (tilecount == 16):
                 output_string += str(hex(tilecount-1)[2:])+prev
                 tilecount = 1
-                if (charcount > 63):
-                    charcount = 0
-            elif (charcount > 63):
+                if (xcount > 63):
+                    xcount = 0
+                    ycount += 1
+            elif (xcount > 63):
                 output_string += str(hex(tilecount-1)[2:])+prev
                 tilecount = 1
-                charcount = 0
+                xcount = 0
+                ycount += 1
+            elif (pos in self.breakpoints[self.activemap]):
+                output_string += str(hex(tilecount-1)[2:])+prev
+                tilecount = 1
             else:
                 tilecount += 1
-            charcount += 1
+            xcount += 1
     
         output_string += str(hex(tilecount-1)[2:])+character
-        return output_string
-
-    def mapdecode(self, input_string):
-        output_string = ""
-        # Read byte from mapdata
-        for c in input_string:
-            # Convert byte to string 
-            byte = c.encode("hex")
-            # Calculate map data
-            terraintype = byte[1]
-            terraincount = int(byte[0], 16)+1
-            debugcounter += terraincount
-
-            # Add to output_string
-            for x in range(terraincount):
-                output_string += terraintype
-
+        #print output_string
         return output_string
 
     def drawlocations(self):
@@ -756,9 +776,9 @@ class Zelda2MapEdit:
         for b in self.breakpoints[self.activemap]:
             x = b[0]
             y = b[1]
-            self.canvas.create_line((x*16)+16, (y*16), (x*16)+16, (y*16)+16, fill="red", width=1)
-            #self.canvas.create_line((x*16)+13, (y*16), (x*16)+19, (y*16), fill="red", width=1)
-            #self.canvas.create_line((x*16)+13, (y*16)+16, (x*16)+19, (y*16)+16, fill="red", width=1)
+            self.canvas.create_line(((x-1)*16)+16, (y*16), ((x-1)*16)+16, (y*16)+16, fill="red", width=1)
+            self.canvas.create_line(((x-1)*16)+13, (y*16), ((x-1)*16)+19, (y*16), fill="red", width=1)
+            self.canvas.create_line(((x-1)*16)+13, (y*16)+15, ((x-1)*16)+19, (y*16)+15, fill="red", width=1)
 
     def quit(self):
         # Save before exit?
@@ -780,13 +800,14 @@ class Zelda2MapEdit:
             # Calculate position on map
             x = int(self.round_down(x, 16))/16
             y = int(self.round_down(y, 16))/16
-           
+            offset = self.activemap
+
             # Make sure we are inside borders of the map
             if x < self.mapsizex and x >= 0 and y < self.mapsizey and y >= 0:
                 # Y-axis seems to be offset with 30 on map compared to array
-                text = `self.maparray[x][y]` + " (" + `x` + "," + `y+30` + ")"
+                text = `self.maparray[x][y+(self.mapsizey*offset)]` + " (" + `x` + "," + `y+30` + ")"
                 self.coordlabeltext.set(text)
-    
+   
                 # Print location under cursor
                 if self.activemap == 0:
                     locations = self.maplocations[:46]
@@ -795,7 +816,7 @@ class Zelda2MapEdit:
                 elif self.activemap == 2:
                     locations = self.maplocations[97:139]
                 elif self.activemap == 3:
-                        locations = self.maplocations[139:]
+                    locations = self.maplocations[139:]
 
                 self.locationlabeltext.set("")
                 for l in locations:
@@ -841,7 +862,7 @@ class Zelda2MapEdit:
             maparrayx = int(x)/16
             maparrayy = int(y)/16
             # Position to put breakpoint
-            maparraybreakpointx = abs(int(x)-8)/16
+            maparraybreakpointx = (abs(int(x)-8)/16)+1
 
             # Update maparray
             if self.selectedterrain == 'x':
@@ -851,9 +872,11 @@ class Zelda2MapEdit:
                 # Update tile
                 self.maparray[maparrayx][maparrayy+yoffset] = self.selectedterrain
 
-            # Draw tile
+            # Draw surrounding tiles, locations and breakpoints
             self.drawtile(maparrayx,maparrayy)
-            self.drawtile(maparrayx+1,maparrayy)
+            self.drawtile(maparrayx-1,maparrayy)
+            if maparrayx+1 < self.mapsizex: # Don't draw out of bounds
+                self.drawtile(maparrayx+1,maparrayy)
             self.drawlocations()
             self.drawbreakpoints()
 
@@ -875,8 +898,6 @@ class Zelda2MapEdit:
                 self.drawtile(maparrayx,maparrayy)
                 self.drawlocations()
                 self.drawbreakpoints()
-
-                self.edited = 1
 
     def leftrelease(self, event):
         if self.editenabled == 1:
@@ -963,7 +984,6 @@ class Zelda2MapEdit:
             self.breakpoints[self.activemap].remove(breakpoint) 
         else:
             self.breakpoints[self.activemap].append(breakpoint)
-        #print self.breakpoints
                  
 
 # End Class 
