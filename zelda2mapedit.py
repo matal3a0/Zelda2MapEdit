@@ -521,14 +521,15 @@ class Zelda2MapEdit:
                 rawmapdata = handle.read(1)
                 # Convert rawmapdata to string 
                 strmapdata = rawmapdata.encode("hex")
+
+                #if index == 2:
+                #    print strmapdata,
+
                 # Calculate map data
                 terraintype = strmapdata[1]
                 terraincount = int(strmapdata[0], 16)+1
                 # Keep track of coordinates in map 
                 xcount += terraincount
-                if xcount == 64:
-                    xcount = 0
-                    ycount += 1
 
                 # Add to output_string
                 for x in range(terraincount):
@@ -546,6 +547,11 @@ class Zelda2MapEdit:
                 prevterrain = terraintype
                 prevcount = terraincount
 
+                # If end of line, wrap around
+                if xcount == 64:
+                    xcount = 0
+                    ycount += 1
+
             # Populate maparray with the decoded string
             y = 0+yoffset 
             x = 0
@@ -557,7 +563,8 @@ class Zelda2MapEdit:
                     x = 0
                 if y == self.mapsizey+yoffset:
                     break
-        
+            #print mapstring 
+
         # Read locations
         for i, _ in enumerate(self.maplocations):
             handle.seek(int(self.maplocations[i][1], 16))
@@ -984,7 +991,6 @@ class Zelda2MapEdit:
             self.breakpoints[self.activemap].remove(breakpoint) 
         else:
             self.breakpoints[self.activemap].append(breakpoint)
-                 
 
 # End Class 
 
