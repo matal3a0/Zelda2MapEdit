@@ -258,7 +258,7 @@ class Zelda2MapEdit:
                              [ "Bagu's Cabin", "46A0", "4661", 0, 0, 0, 128, 0 ],
                              [ "Mido", "46A1", "4662", 0, 0, 64, 128, 0 ],
                              [ "Parapa Palace", "46A2", "4663", 0, 0, 0, 128, 0 ],
-                             [ "Swamp Palace", "46A3", "4664", 0, 0, 0, 128, 0 ],
+                             [ "Midoro Swamp Palace", "46A3", "4664", 0, 0, 0, 128, 0 ],
                              [ "Island Palace", "46A4", "4665", 0, 0, 0, 128, 0 ],
                              [ "Cave B West Exit", "614B", "610C", 0, 0, 0, 0, 0 ],
                              [ "Cave B East Exit", "614C", "610D", 0, 0, 64, 0, 0 ],
@@ -303,7 +303,7 @@ class Zelda2MapEdit:
                              [ "Bridge back to East Hyrule", "6173", "6134", 0, 0, 0, 128, 0 ],
                              [ "Cave A back to West Hyrule", "6175", "6136", 0, 0, 0, 128, 0 ],
                              [ "Cave K back to West Hyrule", "6176", "6137", 0, 0, 0, 128, 0 ],
-                             [ "4th Palace", "617F", "6140", 0, 0, 0, 128, 0 ],
+                             [ "Maze Palace", "617F", "6140", 0, 0, 0, 128, 0 ],
                              [ "Maze Island Child", "6182", "6143", 0, 0, 0, 0, 0 ],
                              [ "Death Mountain's Magic Container", "6183", "6144", 0, 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 3", "6184", "6145", 0, 0, 0, 0, 0 ],
@@ -334,7 +334,7 @@ class Zelda2MapEdit:
                              [ "Cave A on the way to Great Palace", "8682", "8643", 0, 0, 64, 0, 0 ],
                              [ "Life doll in swamp", "8683", "8644", 0, 0, 0, 0, 0 ],
                              [ "Extra battle scene (same spot as 864B)", "8684", "8645", 0, 0, 0, 0, 0 ],
-                             [ "500 exp. bag on beach near 5th Palace", "8685", "8646", 0, 0, 0, 0, 0 ],
+                             [ "500 exp. bag on beach near OceanPalace", "8685", "8646", 0, 0, 0, 0, 0 ],
                              [ "Red Magic Jar on beach near Nabooru", "8686", "8647", 0, 0, 0, 0, 0 ],
                              [ "Life doll on beach", "8687", "8648", 0, 0, 0, 0, 0 ],
                              [ "Heart Container on beach east of 3-Eye Rock", "8688", "8649", 0, 0, 0, 0, 0 ],
@@ -350,8 +350,9 @@ class Zelda2MapEdit:
                              [ "Darunia", "869D", "865E", 0, 0, 64, 128, 0 ],
                              [ "New Kasuto *", "869F", "8660", 0, 0, 0, 0, 0 ],
                              [ "Old Kasuto", "86A1", "8662", 0, 0, 64, 128, 0 ],
-                             [ "5th Palace", "86A2", "8663", 0, 0, 0, 128, 0 ],
-                             [ "6th Palace **", "86A3", "8664", 0, 0, 0, 0, 0 ],
+                             [ "Ocean Palace", "86A2", "8663", 0, 0, 0, 128, 0 ],
+                             [ "Call location for Hidden Palace", "8388", "8382", 0, 0, 0, 0, 0 ],
+                             [ "Hidden Palace", "86A3", "8664", 0, 0, 0, 0, 0 ],
                              [ "Great Palace", "86A4", "8665", 0, 0, 0, 128, 0 ],
                              [ "Cave B West Exit", "A14B", "A10C", 0, 0, 0, 0, 0 ],
                              [ "Cave B East Exit", "A14C", "A10D", 0, 0, 64, 0, 0 ],
@@ -396,7 +397,7 @@ class Zelda2MapEdit:
                              [ "Bridge back to East Hyrule", "A173", "A134", 0, 0, 0, 128, 0 ],
                              [ "Cave A back to West Hyrule", "A175", "A136", 0, 0, 0, 128, 0 ],
                              [ "Cave K back to West Hyrule", "A176", "A137", 0, 0, 0, 128, 0 ],
-                             [ "4th Palace", "A17F", "A140", 0, 0, 0, 128, 0 ],
+                             [ "Maze Palace", "A17F", "A140", 0, 0, 0, 128, 0 ],
                              [ "Maze Island Child", "A182", "A143", 0, 0, 0, 0, 0 ],
                              [ "Death Mountain's Magic Container", "A183", "A144", 0, 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 3", "A184", "A145", 0, 0, 0, 0, 0 ],
@@ -671,6 +672,7 @@ class Zelda2MapEdit:
         self.updatemapsizelabel(mapsize)
         
     def mapencode(self, input_string):
+        #print "mapencode"
         ycount = 0
         xcount = 0 # Encoding must stop at 64 tiles per line of map
         tilecount = 1
@@ -720,6 +722,7 @@ class Zelda2MapEdit:
 
         # loop over locations, print square around
         for l in locations:
+            #print "for l in locations"
             x = l[3]-l[5]
             y = l[4]-l[6]
             self.canvas.create_rectangle((x*16), ((y-30)*16), (x*16+16)-1, ((y-30)*16+16)-1, outline="blue", width=1)
@@ -742,6 +745,7 @@ class Zelda2MapEdit:
         self.drawbreakpoints()
 
     def drawtile(self, x, y):
+        #print "drawtile"
         offset = self.activemap
 
         if self.maparray[x][y+(self.mapsizey*offset)] == "0":
@@ -780,7 +784,9 @@ class Zelda2MapEdit:
             self.canvas.create_image(x*16,y*16, anchor=NW, image=self.error_img)
 
     def drawbreakpoints(self):
+        #print "drawbreakpoints"
         for b in self.breakpoints[self.activemap]:
+            #print "for b in self.breakpoints"
             x = b[0]
             y = b[1]
             self.canvas.create_line(((x-1)*16)+16, (y*16), ((x-1)*16)+16, (y*16)+16, fill="red", width=1)
@@ -800,6 +806,7 @@ class Zelda2MapEdit:
             self.master.destroy()
 
     def mousemove(self, event):
+        #print "mousemove"
         if self.editenabled == 1:
             c = event.widget
             # Position on canvas
@@ -827,12 +834,14 @@ class Zelda2MapEdit:
 
                 self.locationlabeltext.set("")
                 for l in locations:
+                    #print "mousemove: for l in locations"
                     if l[3]-l[5] == x and l[4]-l[6] == y+30:
                         text = l[0] + " (" + `l[3]-l[5]` + "," + `l[4]-l[6]` + ") (offset by: " + `l[5]` + "," + `l[6]` + ")"
                         self.locationlabeltext.set(text)
                         break
 
     def mapsizeinbytes(self):
+        #print "mapsizeinbytes"
         yoffset = self.activemap*self.mapsizey
         # Generate mapstring
         mapstring = ""
@@ -846,6 +855,7 @@ class Zelda2MapEdit:
         return len(encmapstring)/2
 
     def updatemapsizelabel(self,mapsize):
+        #print "updatemapsizelabel"
         origmapsize = self.origmapsizes[self.activemap]
 
         text = `mapsize` + "/" + `origmapsize`
@@ -858,6 +868,7 @@ class Zelda2MapEdit:
             self.mapsizelabel.config(fg="black")
 
     def leftpress(self, event):
+        #print "leftpress"
         yoffset = self.mapsizey*self.activemap
 
         if self.editenabled == 1:
@@ -884,13 +895,14 @@ class Zelda2MapEdit:
             self.drawtile(maparrayx-1,maparrayy)
             if maparrayx+1 < self.mapsizex: # Don't draw out of bounds
                 self.drawtile(maparrayx+1,maparrayy)
-            self.drawlocations()
-            self.drawbreakpoints()
+            #self.drawlocations()
+            #self.drawbreakpoints()
 
             # Edited
             self.edited = 1
 
     def leftmotion(self, event):
+        #print "leftmotion"
         yoffset = self.mapsizey*self.activemap
 
         if self.editenabled == 1:
@@ -901,16 +913,20 @@ class Zelda2MapEdit:
             maparrayy = int(y)/16
 
             if self.selectedterrain != 'x':
-                self.maparray[maparrayx][maparrayy+yoffset] = self.selectedterrain
-                self.drawtile(maparrayx,maparrayy)
-                self.drawlocations()
-                self.drawbreakpoints()
+                if self.maparray[maparrayx][maparrayy+yoffset] != self.selectedterrain:
+                    self.maparray[maparrayx][maparrayy+yoffset] = self.selectedterrain
+                    self.drawtile(maparrayx,maparrayy)
+                    #self.drawlocations()
+                    #self.drawbreakpoints()
 
     def leftrelease(self, event):
+        #print "leftrelease"
         if self.editenabled == 1:
             # Calculate map size and update label
             mapsize = self.mapsizeinbytes()
             self.updatemapsizelabel(mapsize)
+            self.drawlocations()
+            self.drawbreakpoints()
 
     def rightpress(self, event):
         if self.editenabled == 1:
