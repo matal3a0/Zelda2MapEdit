@@ -78,55 +78,69 @@ class Zelda2MapEdit:
         # Set window icon
         self.master.tk.call('wm', 'iconphoto', root._w, self.img_2)
 
-        # Frame with buttons
+        # Frame with labelframes
         self.btnFrame = Frame(root, height=60)
         self.btnFrame.grid(row=0, column=0)
 
-        # Buttons
-        self.tile_0_btn = Button(self.btnFrame, image=self.img_0, command=lambda: self.selectterrain("0"))
-        self.tile_0_btn.grid(row=0, column=0)
-        self.tile_1_btn = Button(self.btnFrame, image=self.img_1, command=lambda: self.selectterrain("1"))
-        self.tile_1_btn.grid(row=0, column=1)
-        self.tile_2_btn = Button(self.btnFrame, image=self.img_2, command=lambda: self.selectterrain("2"))
-        self.tile_2_btn.grid(row=0, column=2)
-        self.tile_3_btn = Button(self.btnFrame, image=self.img_3, command=lambda: self.selectterrain("3"))
-        self.tile_3_btn.grid(row=0, column=3)
-        self.tile_4_btn = Button(self.btnFrame, image=self.img_4, command=lambda: self.selectterrain("4"))
-        self.tile_4_btn.grid(row=0, column=4)
-        self.tile_5_btn = Button(self.btnFrame, image=self.img_5, command=lambda: self.selectterrain("5"))
-        self.tile_5_btn.grid(row=0, column=5)
-        self.tile_6_btn = Button(self.btnFrame, image=self.img_6, command=lambda: self.selectterrain("6"))
-        self.tile_6_btn.grid(row=0, column=6)
-        self.tile_7_btn = Button(self.btnFrame, image=self.img_7, command=lambda: self.selectterrain("7"))
-        self.tile_7_btn.grid(row=0, column=7)
-        self.tile_8_btn = Button(self.btnFrame, image=self.img_8, command=lambda: self.selectterrain("8"))
-        self.tile_8_btn.grid(row=0, column=8)
-        self.tile_9_btn = Button(self.btnFrame, image=self.img_9, command=lambda: self.selectterrain("9"))
-        self.tile_9_btn.grid(row=0, column=9)
-        self.tile_a_btn = Button(self.btnFrame, image=self.img_a, command=lambda: self.selectterrain("a"))
-        self.tile_a_btn.grid(row=0, column=10)
-        self.tile_b_btn = Button(self.btnFrame, image=self.img_b, command=lambda: self.selectterrain("b"))
-        self.tile_b_btn.grid(row=0, column=11)
-        self.tile_c_btn = Button(self.btnFrame, image=self.img_c, command=lambda: self.selectterrain("c"))
-        self.tile_c_btn.grid(row=0, column=12)
-        self.tile_d_btn = Button(self.btnFrame, image=self.img_d, command=lambda: self.selectterrain("d"))
-        self.tile_d_btn.grid(row=0, column=13)
-        self.tile_e_btn = Button(self.btnFrame, image=self.img_e, command=lambda: self.selectterrain("e"))
-        self.tile_e_btn.grid(row=0, column=14)
-        self.tile_f_btn = Button(self.btnFrame, image=self.img_f, command=lambda: self.selectterrain("f"))
-        self.tile_f_btn.grid(row=0, column=15)
-        self.bracketbtn = Button(self.btnFrame, image=self.img_bracket, command=lambda: self.selectterrain("x"))
-        self.bracketbtn.grid(row=0, column=16)
+        # Labelframes
+        self.terrainFrame = LabelFrame(self.btnFrame, text="Terrain", padx=5, pady=5)
+        self.terrainFrame.grid(row=0, column=0)
+        self.toolFrame = LabelFrame(self.btnFrame, text="Tools", padx=5, pady=5)
+        self.toolFrame.grid(row=0, column=1)
+        self.coordFrame = LabelFrame(self.btnFrame, text="Coordinates", padx=5, pady=5, width=70)
+        self.coordFrame.grid(row=0, column=2)
+        #self.coordFrame.grid_propagate(0)
+        self.sizeFrame = LabelFrame(self.btnFrame, text="Size", padx=5, pady=5)
+        self.sizeFrame.grid(row=0, column=3)
 
-        # Labels in btnFrame
+        # Buttons
+        self.tile_0_btn = Button(self.terrainFrame, image=self.img_0, command=lambda: self.selectterrain("0"))
+        self.tile_0_btn.grid(row=0, column=0)
+        self.tile_1_btn = Button(self.terrainFrame, image=self.img_1, command=lambda: self.selectterrain("1"))
+        self.tile_1_btn.grid(row=0, column=1)
+        self.tile_2_btn = Button(self.terrainFrame, image=self.img_2, command=lambda: self.selectterrain("2"))
+        self.tile_2_btn.grid(row=0, column=2)
+        self.tile_3_btn = Button(self.terrainFrame, image=self.img_3, command=lambda: self.selectterrain("3"))
+        self.tile_3_btn.grid(row=0, column=3)
+        self.tile_4_btn = Button(self.terrainFrame, image=self.img_4, command=lambda: self.selectterrain("4"))
+        self.tile_4_btn.grid(row=0, column=4)
+        self.tile_5_btn = Button(self.terrainFrame, image=self.img_5, command=lambda: self.selectterrain("5"))
+        self.tile_5_btn.grid(row=0, column=5)
+        self.tile_6_btn = Button(self.terrainFrame, image=self.img_6, command=lambda: self.selectterrain("6"))
+        self.tile_6_btn.grid(row=0, column=6)
+        self.tile_7_btn = Button(self.terrainFrame, image=self.img_7, command=lambda: self.selectterrain("7"))
+        self.tile_7_btn.grid(row=0, column=7)
+        self.tile_8_btn = Button(self.terrainFrame, image=self.img_8, command=lambda: self.selectterrain("8"))
+        self.tile_8_btn.grid(row=0, column=8)
+        self.tile_9_btn = Button(self.terrainFrame, image=self.img_9, command=lambda: self.selectterrain("9"))
+        self.tile_9_btn.grid(row=0, column=9)
+        self.tile_a_btn = Button(self.terrainFrame, image=self.img_a, command=lambda: self.selectterrain("a"))
+        self.tile_a_btn.grid(row=0, column=10)
+        self.tile_b_btn = Button(self.terrainFrame, image=self.img_b, command=lambda: self.selectterrain("b"))
+        self.tile_b_btn.grid(row=0, column=11)
+        self.tile_c_btn = Button(self.terrainFrame, image=self.img_c, command=lambda: self.selectterrain("c"))
+        self.tile_c_btn.grid(row=0, column=12)
+        self.tile_d_btn = Button(self.terrainFrame, image=self.img_d, command=lambda: self.selectterrain("d"))
+        self.tile_d_btn.grid(row=0, column=13)
+        self.tile_e_btn = Button(self.terrainFrame, image=self.img_e, command=lambda: self.selectterrain("e"))
+        self.tile_e_btn.grid(row=0, column=14)
+        self.tile_f_btn = Button(self.terrainFrame, image=self.img_f, command=lambda: self.selectterrain("f"))
+        self.tile_f_btn.grid(row=0, column=15)
+        
+        self.bracketbtn = Button(self.toolFrame, image=self.img_bracket, command=lambda: self.selectterrain("x"))
+        self.bracketbtn.grid(row=0, column=0)
+
+        # Labels 
         self.coordlabeltext = StringVar()
+        #self.coordlabeltext.set("(0, 0)")
         self.coordlabeltext.set("'0' (0, 0)")
-        self.coordlabel = Label(self.btnFrame, textvariable=self.coordlabeltext)
-        self.coordlabel.grid(row=0, column=17)
+        self.coordlabel = Label(self.coordFrame, textvariable=self.coordlabeltext)
+        self.coordlabel.grid(row=0, column=0, pady=2)
+
         self.mapsizelabeltext = StringVar()
         self.mapsizelabeltext.set("000 / 000")
-        self.mapsizelabel = Label(self.btnFrame, textvariable=self.mapsizelabeltext)
-        self.mapsizelabel.grid(row=0, column=18)
+        self.mapsizelabel = Label(self.sizeFrame, textvariable=self.mapsizelabeltext)
+        self.mapsizelabel.grid(row=0, column=0, pady=2)
 
         # Frame for label in the bottom
         self.labelFrame = Frame(root, height=60)
@@ -819,6 +833,7 @@ class Zelda2MapEdit:
             # Make sure we are inside borders of the map
             if x < self.mapsizex and x >= 0 and y < self.mapsizey and y >= 0:
                 # Y-axis seems to be offset with 30 on map compared to array
+                #text = "(" + `x` + "," + `y+30` + ")"
                 text = `self.maparray[x][y+(self.mapsizey*offset)]` + " (" + `x` + "," + `y+30` + ")"
                 self.coordlabeltext.set(text)
    
