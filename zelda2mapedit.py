@@ -912,8 +912,8 @@ class Zelda2MapEdit:
                 if self.maparray[maparrayx][maparrayy+yoffset] != self.selectedterrain:
                     self.maparray[maparrayx][maparrayy+yoffset] = self.selectedterrain
                     self.drawtile(maparrayx,maparrayy)
-                    self.drawlocations()
-                    self.drawbreakpoints()
+                    #self.drawlocations()
+                    #self.drawbreakpoints()
 
     def leftrelease(self, event):
         #print "leftrelease"
