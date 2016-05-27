@@ -228,7 +228,7 @@ class Zelda2MapEdit:
         # Name, x address, y address, x offset, y offset, palace pointer address
         # West Hyrule
 
-        self.maplocations = [[ "North Castle", "466E", "462F", 0, 0, 0, 0, 0 ],
+        self.maplocations = [[[ "North Castle", "466E", "462F", 0, 0, 0, 0, 0 ],
                              [ "Trophy cave", "466F", "4630", 0, 0, 0, 0, 0 ],
                              [ "Forest with 50 exp. bag and Aches", "4670", "4631", 0, 0, 0, 0, 0 ],
                              [ "1st Magic Container cave", "4671", "4632", 0, 0, 0, 0, 0 ],
@@ -272,8 +272,8 @@ class Zelda2MapEdit:
                              [ "Bagu's Cabin", "46A0", "4661", 0, 0, 0, 128, 0 ],
                              [ "Mido", "46A1", "4662", 0, 0, 64, 128, 0 ],
                              [ "Parapa Palace", "46A2", "4663", 0, 0, 0, 128, 0 ],
-                             [ "Midoro Swamp Palace", "46A3", "4664", 0, 0, 0, 128, 0 ],
-                             [ "Island Palace", "46A4", "4665", 0, 0, 0, 128, 0 ],
+                             [ "Midoro Swamp Palace", "46A3", "4664", 0, 0, 0, 128, 0 ]],
+                             [[ "Island Palace", "46A4", "4665", 0, 0, 0, 128, 0 ],
                              [ "Cave B West Exit", "614B", "610C", 0, 0, 0, 0, 0 ],
                              [ "Cave B East Exit", "614C", "610D", 0, 0, 64, 0, 0 ],
                              [ "Cave C West Exit", "614D", "610E", 0, 0, 0, 0, 0 ],
@@ -324,8 +324,8 @@ class Zelda2MapEdit:
                              [ "Maze Island Forced Battle Scene 7", "6185", "6146", 0, 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 4", "6186", "6147", 0, 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 5", "6187", "6148", 0, 0, 0, 0, 0 ],
-                             [ "Maze Island Forced Battle Scene 6", "6188", "6149", 0, 0, 0, 0, 0 ],
-                             [ "Forest with 500 Exp. bag west of Nabooru", "866E", "862F", 0, 0, 0, 0, 0 ],
+                             [ "Maze Island Forced Battle Scene 6", "6188", "6149", 0, 0, 0, 0, 0 ]],
+                             [[ "Forest with 500 Exp. bag west of Nabooru", "866E", "862F", 0, 0, 0, 0, 0 ],
                              [ "Forest with 500 Exp. bag north of 3-Eye Rock", "866F", "8630", 0, 0, 0, 0, 0 ],
                              [ "1st Forced battle scene after River Devil", "8670", "8631", 0, 0, 0, 0, 0 ],
                              [ "2nd Forced battle scene after River Devil", "8671", "8632", 0, 0, 0, 0, 0 ],
@@ -367,8 +367,8 @@ class Zelda2MapEdit:
                              [ "Ocean Palace", "86A2", "8663", 0, 0, 0, 128, 0 ],
                              [ "Call location for Hidden Palace", "8388", "8382", 0, 0, 0, 0, 0 ],
                              [ "Hidden Palace", "86A3", "8664", 0, 0, 0, 0, 0 ],
-                             [ "Great Palace", "86A4", "8665", 0, 0, 0, 128, 0 ],
-                             [ "Cave B West Exit", "A14B", "A10C", 0, 0, 0, 0, 0 ],
+                             [ "Great Palace", "86A4", "8665", 0, 0, 0, 128, 0 ]],
+                             [[ "Cave B West Exit", "A14B", "A10C", 0, 0, 0, 0, 0 ],
                              [ "Cave B East Exit", "A14C", "A10D", 0, 0, 64, 0, 0 ],
                              [ "Cave C West Exit", "A14D", "A10E", 0, 0, 0, 0, 0 ],
                              [ "Cave C East Exit", "A14E", "A10F", 0, 0, 64, 0, 0 ],
@@ -418,7 +418,7 @@ class Zelda2MapEdit:
                              [ "Maze Island Forced Battle Scene 7", "A185", "A146", 0, 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 4", "A186", "A147", 0, 0, 0, 0, 0 ],
                              [ "Maze Island Forced Battle Scene 5", "A187", "A148", 0, 0, 0, 0, 0 ],
-                             [ "Maze Island Forced Battle Scene 6", "A188", "A149", 0, 0, 0, 0, 0 ]]
+                             [ "Maze Island Forced Battle Scene 6", "A188", "A149", 0, 0, 0, 0, 0 ]]]
 
         # Keep track of location to move
         self.movelocation = -1
@@ -582,10 +582,11 @@ class Zelda2MapEdit:
 
         # Read locations
         for i, _ in enumerate(self.maplocations):
-            handle.seek(int(self.maplocations[i][1], 16))
-            self.maplocations[i][3] = int(handle.read(1).encode("hex"), 16)
-            handle.seek(int(self.maplocations[i][2], 16))
-            self.maplocations[i][4] = int(handle.read(1).encode("hex"), 16)
+            for j, _ in enumerate(self.maplocations[i]):
+                handle.seek(int(self.maplocations[i][j][1], 16))
+                self.maplocations[i][j][3] = int(handle.read(1).encode("hex"), 16)
+                handle.seek(int(self.maplocations[i][j][2], 16))
+                self.maplocations[i][j][4] = int(handle.read(1).encode("hex"), 16)
 
         # Close file
         handle.close()
@@ -637,41 +638,42 @@ class Zelda2MapEdit:
 
         # Save locations
         for i, _ in enumerate(self.maplocations):
-            # Convert integer value to hex-string without 0x, and pad with 0 if needed
-            x = hex(self.maplocations[i][3])[2:].zfill(2)
-            y = hex(self.maplocations[i][4])[2:].zfill(2)
-            # Convert string to binary value
-            x = x.decode("hex")
-            y = y.decode("hex")
-            # Find address in romfile and write value
-            handle.seek(int(self.maplocations[i][1], 16))
-            handle.write(x) 
-            handle.seek(int(self.maplocations[i][2], 16))
-            handle.write(y)
-            
-            # Save offset for palace locations
-            if self.maplocations[i][7] != 0:
-                offset_in_array = (self.maplocations[i][4]-self.maplocations[i][6]-30)*64+self.maplocations[i][3]
+            for j, _ in enumerate(self.maplocations[i]):
+                # Convert integer value to hex-string without 0x, and pad with 0 if needed
+                x = hex(self.maplocations[i][j][3])[2:].zfill(2)
+                y = hex(self.maplocations[i][j][4])[2:].zfill(2)
+                # Convert string to binary value
+                x = x.decode("hex")
+                y = y.decode("hex")
+                # Find address in romfile and write value
+                handle.seek(int(self.maplocations[i][j][1], 16))
+                handle.write(x) 
+                handle.seek(int(self.maplocations[i][j][2], 16))
+                handle.write(y)
                 
-                offsetsum = 0
-                j = 0
-                bytecounter = 0
-                while j+1 < len(encodedstring):
-                    offsetsum += int(encodedstring[j], 16)+1
-                    j += 2
-                    bytecounter += 1
-                    if offsetsum == offset_in_array:
-                        # Offset base is 0x7C00 (31744)
-                        # Add offset to base, write as table at address
-                        offsetstring = hex(j/2+31744)[2:].zfill(2)
-                        byte1 = offsetstring[2:]
-                        byte2 = offsetstring[:2]
-                        byte1 = byte1.decode("hex")
-                        byte2 = byte2.decode("hex")
-                        handle.seek(int(self.maplocations[i][7], 16))
-                        handle.write(byte1)
-                        handle.write(byte2)
-                        break
+                # Save offset for palace locations
+                if self.maplocations[i][j][7] != 0:
+                    offset_in_array = (self.maplocations[i][j][4]-self.maplocations[i][j][6]-30)*64+self.maplocations[i][j][3]
+                    
+                    offsetsum = 0
+                    j = 0
+                    bytecounter = 0
+                    while j+1 < len(encodedstring):
+                        offsetsum += int(encodedstring[j], 16)+1
+                        j += 2
+                        bytecounter += 1
+                        if offsetsum == offset_in_array:
+                            # Offset base is 0x7C00 (31744)
+                            # Add offset to base, write as table at address
+                            offsetstring = hex(j/2+31744)[2:].zfill(2)
+                            byte1 = offsetstring[2:]
+                            byte2 = offsetstring[:2]
+                            byte1 = byte1.decode("hex")
+                            byte2 = byte2.decode("hex")
+                            handle.seek(int(self.maplocations[i][j][7], 16))
+                            handle.write(byte1)
+                            handle.write(byte2)
+                            break
 
         handle.close()
         self.edited = 0
@@ -725,18 +727,8 @@ class Zelda2MapEdit:
         return output_string
 
     def drawlocations(self):
-        if self.activemap == 0:
-            locations = self.maplocations[:46]
-        elif self.activemap == 1:
-            locations = self.maplocations[46:97]
-        elif self.activemap == 2:
-            locations = self.maplocations[97:139]
-        elif self.activemap == 3:
-            locations = self.maplocations[139:]
-
         # loop over locations, print square around
-        for l in locations:
-            #print "for l in locations"
+        for l in self.maplocations[self.activemap]:
             x = l[3]-l[5]
             y = l[4]-l[6]
             self.canvas.create_rectangle((x*16), ((y-30)*16), (x*16+16)-1, ((y-30)*16+16)-1, outline="blue", width=1)
@@ -837,19 +829,8 @@ class Zelda2MapEdit:
                 text = `self.maparray[x][y+(self.mapsizey*offset)]` + " (" + `x` + "," + `y+30` + ")"
                 self.coordlabeltext.set(text)
    
-                # Print location under cursor
-                if self.activemap == 0:
-                    locations = self.maplocations[:46]
-                elif self.activemap == 1:
-                    locations = self.maplocations[46:97]
-                elif self.activemap == 2:
-                    locations = self.maplocations[97:139]
-                elif self.activemap == 3:
-                    locations = self.maplocations[139:]
-
                 self.locationlabeltext.set("")
-                for l in locations:
-                    #print "mousemove: for l in locations"
+                for l in self.maplocations[self.activemap]:
                     if l[3]-l[5] == x and l[4]-l[6] == y+30:
                         text = l[0] + " (" + `l[3]-l[5]` + "," + `l[4]-l[6]` + ") (offset by: " + `l[5]` + "," + `l[6]` + ")"
                         self.locationlabeltext.set(text)
@@ -910,8 +891,8 @@ class Zelda2MapEdit:
             self.drawtile(maparrayx-1,maparrayy)
             if maparrayx+1 < self.mapsizex: # Don't draw out of bounds
                 self.drawtile(maparrayx+1,maparrayy)
-            #self.drawlocations()
-            #self.drawbreakpoints()
+            self.drawlocations()
+            self.drawbreakpoints()
 
             # Edited
             self.edited = 1
@@ -931,8 +912,8 @@ class Zelda2MapEdit:
                 if self.maparray[maparrayx][maparrayy+yoffset] != self.selectedterrain:
                     self.maparray[maparrayx][maparrayy+yoffset] = self.selectedterrain
                     self.drawtile(maparrayx,maparrayy)
-                    #self.drawlocations()
-                    #self.drawbreakpoints()
+                    self.drawlocations()
+                    self.drawbreakpoints()
 
     def leftrelease(self, event):
         #print "leftrelease"
@@ -954,16 +935,8 @@ class Zelda2MapEdit:
             # Make sure we are inside borders of the map
             if x < self.mapsizex and x >= 0 and y < self.mapsizey and y >= 0:
                 # Find a location to move
-                if self.activemap == 0:
-                    locations = self.maplocations[:46]
-                elif self.activemap == 1:
-                    locations = self.maplocations[46:97]
-                elif self.activemap == 2:
-                    locations = self.maplocations[97:139]
-                elif self.activemap == 3:
-                    locations = self.maplocations[139:]
 
-                for p, l in enumerate(locations):
+                for p, l in enumerate(self.maplocations[self.activemap]):
                     if l[3]-l[5] == x and l[4]-l[6] == y+30:
                         self.movelocation = p
                         self.movelocationprevx = x
@@ -995,18 +968,8 @@ class Zelda2MapEdit:
             
             # Make sure we are inside borders of the map, and we found a location to move
             if x < self.mapsizex and x >= 0 and y < self.mapsizey and y >= 0 and self.movelocation >= 0:
-                # Update location
-                if self.activemap == 0:
-                    locations = self.maplocations[:46]
-                elif self.activemap == 1:
-                    locations = self.maplocations[46:97]
-                elif self.activemap == 2:
-                    locations = self.maplocations[97:139]
-                elif self.activemap == 3:
-                    locations = self.maplocations[139:]
-
-                locations[self.movelocation][3] = x+locations[self.movelocation][5]
-                locations[self.movelocation][4] = y+30+locations[self.movelocation][6]
+                self.maplocations[self.activemap][self.movelocation][3] = x+self.maplocations[self.activemap][self.movelocation][5]
+                self.maplocations[self.activemap][self.movelocation][4] = y+30+self.maplocations[self.activemap][self.movelocation][6]
 
                 self.movelocation = -1 
                 self.drawmap()
