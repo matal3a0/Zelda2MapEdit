@@ -55,6 +55,13 @@ class Zelda2MapEdit:
         self.canvas.bind("<ButtonRelease-3>", self.rightrelease)
         self.canvas.bind("<Motion>", self.mousemove)
 
+        # Tool images
+        self.img_breakpoint = PhotoImage(data = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACO0lEQVQ4T5XTX0hTURwH8O+5d+6fs5nTwiUy6CESESywIoz8V0FIvQkLgoiiyIigKCLoqRcpMdJCifYU6x80htayPzgXKIXRiB4Ks5ESue50tnt3/58TE4oWGvO8nu/3A+f8ziEocMk1NQH2cdoPl8VEiXPAsdZ2iUxMLZBC+krrhi42Jpxl1ARWWUGcBPA4ZOrxrC8IUA9vD7HP2EdHXgO+ChA3D5KDyt1DBQH68ZYw19Larpy5AY5JQKUbpMwBUl2BJQG2rcoBjRKIJbxWjTvc3sZ2Qg2whAA2+Q3MxsCtWw1G7T/yALarrlizsYdM0WpZSqK822HnO9rWgOOhR2LQZgRYbaWAzMAUE9D55jxA9W+JoKx0NzISaCoN6/5mQDehDo9CmZqD9F0GLxsHKymNSCLjXJBm8wDt6M6XqNvUhGQSNJtB0UYftNAw5K8/IScV6PPmLZ+SPvL35PKBAw3H4PHcZIoBkpiBbuGQnZ6HMqsCoqHzPPV6MxlhWSC3QRurorBYdygyAxEkyBKFumCgmBHYCddgzabe/BcIB4N3m66e77CmszBVDpxoAhoFwGCA1buk9LtlgaEnz3vjJk7UX7l4aM/b9/5skbONqOZingAfHOJc7b8v988dhMKPL6uSeOH2q/HOp33dfbmg5CzfDJ6eBIOXJ1ynPSN8WhKIxsZPCclkz+Dgo3OBQKCrkP/xO0Mm4vGtXyYTY9HRaM/1a92nV1JePNqLkdiD+8F7z/r7ewdWWs7lfwHT2viKQFiEyQAAAABJRU5ErkJggg==")
+        self.img_breakpoint = PhotoImage(data = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACOklEQVQ4T53RX0hTURwH8O+5m3e77s67jSCxG5ZYoA89JGHzwSL6hxL9kXoqIUG0pGiEUVKtQIuiGsuSUVBIZOWD2INEklBZueQ2SdKyWv+u5JxlbjavG+uccFHz0XYefpyH8/3w5fwIAFy92Rq2RKd92yvKV7N2d0n0R7gYwTE7QpMcJrR0EuFeGppbKjTX4UW67CwJcRj4Hft7Z7JkZrz48GVkaUDNJI2143yObKORCJj/I+hoGBifAiBhKmdxf5o5tiwtex50jIPR1ZbIJsbjt3616Gm3/Mu5G7SsFESygb1/lwC4UAzxrxq+hSZgzhYhLM+FngGGG0+SQNerN6rd55Vxshpc2UYQyQr6egg0MAEuHEM8GMXYZARilgBTYR70eh0MnvtJoLNvQF3p88ppp/eCbC0FsUigg0Ogo3ME7vYoarGvVxZcDqBsE4gkgQ4Mgo6G/jQY0TA2FYG4QISpIBccAYRrD5MNWh48Utf2++QMz1GwzetABGEY/k9eGgy34bsWpVG+LhgIFogLRaTny9AzCuMtbxK4fq9rZIu3O9PS3HBb27a+Mf1Cx7OZz/17VPsGG/ncd56fb+oQ87OGuXg8w3jneee/LTS1trOC6Z89heU7i2YH53JP1LjovsysS/KUXSVrVswlNPtNAqg/dZZZbValproyNeD4iXpmNotK7cEDqQGHjhxjJqOgOJ11qQEORy3T8bxy7kxDakDVnn2MEE7xNLlTAyqraiKEEOWK59Kq/93Cb5Ba6BH9oub7AAAAAElFTkSuQmCC")
+        self.img_open = PhotoImage(data = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACHElEQVQ4T6WTTUgVURiGn+/MHRWviyCodT+S3oXLdq2CgnBn0f8P1KaNC5dBixYRolBB0jXBkktZiasWtXBTLYwCN5mCYKlFkFSCxUXvzDlfnDNjdxcXmuHwzQznPO/7/Yzwn5fM9tDT3FYsO+INFIzYlqT6q680QaURtsxf2mH3XHtgJLKIVdLNKsv9vewbXpWGAB96u7R0+xGsz4Jz0Frk/eWLdI1+bwzw6myHHhi9C6sLYBWaYxbKE/z+9Jm4zaCa+1DF34hBxKcq/FyeuyoBMFKGb/OocwgOtu3K3ISlYC04v/JvYqBgeHeljwxQHoLVOdRKdgCH+Lh1yKaQppAkYDfwRrzT1wPDyNSpTj14zwPm0cRBbQ2trmUbvWKaQGohKkLUAoU2RB3SVGDqxh3k2dF27S5fRxefo5vrmYpXS1PUx1zdP6tNEI0xxZ2Y7bt5cethDug/ja7MoM6EQqpXtLVMOYAc6t89LKkhtSqF2DA5vow87m7X4zfPo0tvshpYi3rbQdnifNyqgfXuHKgjloTJJys5YOAkujSNS6O6ZestZw7+ppGDjLMUIsf4069I5fBePTN4DP04jQsOHC6tBdt1ZYsGJ0mokajSFBsqHjB2pEPPDZ2AxZeQmrpi2Jyrh/blrfTDFgGxYWzkCzJYar2//1DnhWb7A+tVQ+815OmXsw7jHM63NJ/KQgSbCbydWa80NO//+qn+AMFxYT4s9F/IAAAAAElFTkSuQmCC")
+        self.img_save = PhotoImage(data = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAC+UlEQVQ4T5WSX2hbdRTHP7+be9Om6domW5YmsVlry7q0KlXonpRJsRXFF1GYMPFFcAi+jLHB9iAKk6IoPshEEHxRFFHBBy2rWrQ43WxXt6nZktqUrbQbbf41MSY39yb3SJIJ+jDB83Yezud8+ZyjXv4xI0rXsdHx1kt0trfhuKRIXbpQCgW4XDqGboAI+dw25wsGW9tl/9lDe/LqxbMZOTjm5+uc4qE/U4zuC4E0xgABNA+p1WsspjYZHwzibnPzoRVm7sIGuXwtrE58tyV39nexUHDx6B8JHh4JUqxrzc11Rwjt7uHEmx9xdeB+prILDI3G+HbnPficMrMXsqhj32xKbKCbxaLBVOEyDw4HKDk6CsERoc/fyfRnP5GdnGT0+xnCgQAz/nH62y2WEjnU0dkNGRrwNQGTuSUm9gYoyS2AI/Tt7uH46c9JDE8xsTZL7K4YZ/z7CRtmC/Dcxyty91iYhbzBZOYcj4wEKIq7mUAc2LHDy9wv10mvLNMT7aetXeer7nEihsnPV7Oow5+kZGgkxKLt4d7EPBN97ZRVC/C3R2+HB7cLdLvKF8sF4iMH6LVK/BrfRD3/6ar07o3w+w/n0deTODUb0bTWFW5VCwWa44DLwN0/TNvYfpKX11BPv58Q32Avh30ZRvcN/mvwdk08keKlG362kpuoZz5IihENciSQIeDrYebLOaRmUzbLVComVqVCxapimybpdJrp16dJ57c5ds1HIbmBOvTeFZE9QU6G880EIjQe8D+rkeCFlS5KiRuop979TcxokFPRwv9K8Gy8Eyu5jnri7UtSioZ5Y7BIJLSTbG4bl6YhIoiS1luLoDSwqzV27fJzcyvPwYteWF5DPX56SdKhCO/ESs0Es2fmqdkWFbNCpVym2nBhVrGqJrlslldePdV08Ng5D0ZqDfXAW3GpDoV5rXuVA/fdQSVbRHO1FDRUNE/YEIOiXq/T4fcxf2mdJ6/34bl4BRU5Pi+OKKyyTcGq/UPe7U26dQ2vqtPR3cFfLQlxpBs2xAwAAAAASUVORK5CYII=")
+        self.img_edit = PhotoImage(data = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACTElEQVQ4T5WTX0hTcRTHv3eh7k7c2oTC9RdkrrFdJdd0kom1lJIwcA+h0Muit4oegsKKoCSjNwlfQguySCU0M0vDSiqdmjXZdql770DNbLh/rpjOed0KJ63GjNnv+Xw/n/PjnEPgP964kXynrCnQLdCu+VCvc7d8yD9FrDc/fe4gy+SXKnKGbmCbRwjfSBB+MalcF8BSvd3mPW7SlB6+gq7LZ0DV3YIiDZjdkYGkgFFjLqt7pFd8cd3Gm64TqD7ZhI6zp6BtaIRMmQRgPkrZ8tv2aoi0ZqQ4ebheAW20CceuN8NyvhaZ/fVj/+xg8IiK1baXKARkE5aZMIR+IDQlhrntB6zZJhgkATt1qZ1aE/BSv8lW1GvQpEg6wDOhaNhjl8JDC5AhXoRzeJ4r6EPOygASAL1aGbvnzi6FNNeKEBuAcG417LYREEmX4OEkdt2DGer39OIAz6iNtsKHKo1MzSDI+GJmN01AJObhspJcYacrak4APM1NZ/X38xSZ1GcEWd8fM02AlPD4Ni60Fz92x8xxgNbN6Cm+p6vYUk4jyCz89WcCpJjH9EchV9LtjjPHAfortj439Lw+xE+qIfi6BB8nhde+2vbE+1R7aY83wRwDPDkgKddeuNYnLzsNTNZibrARzpEw0mUbwJkFXNkL/5rmGOCqCNqalptj2VVFgMeKyMxbOFo6QQ+k0FUfAppkt0I0qIQXzZ8W6+rvViJrZwSO1mEwo8Fuo2W+Mlk4ugeNatFP9/fF5azUyP59ZXKSD4cdeU2zE+sJr9T8Aolx7FvIXRiTAAAAAElFTkSuQmCC")
+
         # Terrain images 
         self.img_0 = PhotoImage(data = "R0lGODlhEAAQAPcAAP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQAEBAYCAgICAgICAgP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQAEBAYCAgICAgICAgICAgICAgP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQICAgICAgICAgICAgICAgICAgICAgP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP7+/v7+/v7+/v7+/v7+/v/AQP/AQAEBAYCAgICAgICAgICAgP7+/v/AQP/AQP/AQP7+/v7+/gEBAQEBAf7+/v/AQAEBAYCAgICAgICAgICAgICAgICAgP7+/v/AQP/AQP7+/v7+/gEBAQEBAf7+/gEBAYCAgICAgICAgICAgICAgICAgICAgICAgP7+/v/AQP/AQP/AQP/AQP/AQP/AQAEBAYCAgICAgICAgICAgICAgICAgICAgICAgP7+/v/AQP/AQP/AQAEBAYCAgICAgP7+/gEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AQP/AQP/AQAEBAYCAgICAgP7+/oCAgP7+/gEBAQEBAf7+/v7+/v7+/v7+/v7+/v/AQP/AQAEBAYCAgICAgP7+/v7+/v7+/oCAgP7+/gEBAQEBAQEBAQEBAf7+/v7+/v/AQAEBAYCAgICAgICAgP7+/v7+/v7+/oCAgICAgP7+/gEBAQEBAQEBAf7+/v7+/v/AQAEBAYCAgICAgICAgICAgICAgICAgICAgICAgP7+/gEBAf7+/v7+/v7+/v7+/v/AQP/AQAEBAf7+/v7+/v7+/v7+/v7+/v7+/v7+/gEBAQEBAf7+/v7+/v7+/v7+/v/AQP/AQAEBAf7+/v7+/v7+/gEBAf7+/v7+/v7+/v/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQAEBAf7+/v7+/v7+/gEBAf7+/v7+/v7+/v/AQP/AQP/AQP/AQP/AQP/AQP/AQCH5BAAAAAAAIf8LSW1hZ2VNYWdpY2sNZ2FtbWE9MC40NTQ1NQAsAAAAABAAEAAACP4AAQQQMIBAAQMHECRQsIBBAwcPIESQMIFCBQsXMGTQsIFDBw8fQIQQMYJECRMnUKRQsYJFCxcvYMSQMYNGDRs3cOTQsYNHDx8/gAQRMoRIESNHkCRRsoRJEydPoESRMoVKFStXsGTRsoVLFy9fwIQRM4ZMGTNn0KRRs4ZNGzdv4MSRM4dOHTt38OTRs4dPHz9/AAUSNIhQIUOHECVStIhRI0ePIEWSNIlSJUuXMGXStIlTJ0+fQIUSNYpUKVOnUKVStYpVK1evYMWSNYtWLVu3cOXStYtXL1+/gAUTNoxYMWPHkCVTtoxZM2fPoEWTNo1aNWvXsGXTto1bN2/fwCWFEzeOXDlz59ClU7eOXTt37+DFkzePXj179/Dl07ePXz9//wQEADs=")
         self.img_1 = PhotoImage(data = "R0lGODlhEAAQAPAAAAEBAQAAACH5BAAAAAAAIf8LSW1hZ2VNYWdpY2sNZ2FtbWE9MC40NTQ1NQAsAAAAABAAEAAAAg6Ej6nL7Q+jnLTai7M+BQA7")
@@ -72,28 +79,34 @@ class Zelda2MapEdit:
         self.img_d = PhotoImage(data = "R0lGODlhEQAQAPEAAAEBAZnZ6sDAwP7+/iH5BAAAAAAAIf8LSW1hZ2VNYWdpY2sNZ2FtbWE9MC40NTQ1NQAsAAAAABEAEAAAAi5cjmF5gsAORC7apuxK9caObIkBPhZQiSEjqIcbdBMzx57lwG5524zuo51SGlYBADs=")
         self.img_e = PhotoImage(data = "R0lGODlhEAAQAPcAAP/AQP/AQP/AQP/AQP7+/v7+/v7+/v7+/v7+/v7+/sBAAMBAAP/AQP/AQP/AQP/AQP/AQP/AQP7+/v7+/v7+/sBAAMBAAP7+/v7+/sBAAP7+/v7+/sBAAAEBAf/AQP/AQP/AQP7+/v7+/sBAAMBAAP7+/v7+/sBAAMBAAMBAAMBAAMBAAP7+/sBAAAEBAf/AQP/AQP7+/sBAAP7+/v7+/sBAAP7+/v7+/v7+/sBAAMBAAMBAAMBAAMBAAAEBAf/AQP7+/v7+/sBAAP7+/sBAAMBAAMBAAMBAAP7+/v7+/sBAAMBAAMBAAAEBAQEBAQEBAf/AQP7+/v7+/sBAAP7+/sBAAMBAAMBAAMBAAMBAAMBAAAEBAQEBAcBAAAEBAQEBAf7+/v7+/sBAAMBAAMBAAMBAAMBAAMBAAMBAAAEBAQEBAcBAAAEBAQEBAQEBAf/AQP7+/sBAAMBAAMBAAMBAAMBAAMBAAMBAAMBAAMBAAAEBAcBAAMBAAAEBAQEBAQEBAf/AQP7+/sBAAMBAAMBAAMBAAMBAAMBAAMBAAMBAAMBAAAEBAcBAAMBAAAEBAQEBAf/AQMBAAMBAAMBAAAEBAcBAAMBAAMBAAMBAAMBAAAEBAcBAAAEBAQEBAQEBAQEBAcBAAMBAAMBAAMBAAMBAAAEBAQEBAcBAAMBAAAEBAcBAAAEBAQEBAcBAAAEBAQEBAQEBAcBAAMBAAAEBAcBAAMBAAMBAAAEBAQEBAQEBAQEBAQEBAcBAAMBAAAEBAQEBAQEBAcBAAMBAAMBAAAEBAQEBAQEBAcBAAAEBAQEBAcBAAMBAAAEBAQEBAQEBAf/AQP/AQAEBAQEBAQEBAQEBAcBAAAEBAQEBAcBAAAEBAQEBAQEBAQEBAQEBAQEBAf/AQP/AQP/AQP/AQAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AQP/AQP/AQP/AQP/AQP/AQAEBAQEBAQEBAf/AQP/AQAEBAQEBAQEBAQEBAf/AQP/AQP/AQCH5BAAAAAAAIf8LSW1hZ2VNYWdpY2sNZ2FtbWE9MC40NTQ1NQAsAAAAABAAEAAACP4AAQQQMIBAAQMHECRQsIBBAwcPIESQMIFCBQsXMGTQsIFDBw8fQIQQMYJECRMnUKRQsYJFCxcvYMSQMYNGDRs3cOTQsYNHDx8/gAQRMoRIESNHkCRRsoRJEydPoESRMoVKFStXsGTRsoVLFy9fwIQRM4ZMGTNn0KRRs4ZNGzdv4MSRM4dOHTt38OTRs4dPHz9/AAUSNIhQIUOHECVStIhRI0ePIEWSNIlSJUuXMGXStIlTJ0+fQIUSNYpUKVOnUKVStYpVK1evYMWSNYtWLVu3cOXStYtXL1+/gAUTNoxYMWPHkCVTtoxZM2fPoEWTNo1aNWvXsGXTto1bN2/fwCWFEzeOXDlz59ClU7eOXTt37+DFkzePXj179/Dl07ePXz9//wQEADs=")
         self.img_f = PhotoImage(data = "R0lGODlhEAAQAPcAAP/AQP/AQP/AQP/AQP/AQAEBAf/AQP/AQP/AQP/AQP/AQAEBAf/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQAEBAQEBAQEBAf/AQAEBAQEBAQEBAf/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQAEBAQEBAQEBAQEBAQEBAf/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQAEBAf7+/v7+/gEBAf7+/v7+/gEBAf/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQAEBAf7+/gEBAQEBAQEBAf7+/gEBAf/AQP/AQP/AQP/AQP/AQP/AQAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AQAEBAQEBAQEBAQEBAQEBAQEBAQEBAcBAAAEBAcBAAAEBAQEBAQEBAQEBAQEBAQEBAf/AQAEBAf/AQP/AQAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AQP/AQAEBAf/AQP/AQP/AQP/AQAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AQP/AQP/AQP/AQP/AQP/AQAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AQP/AQP/AQP/AQAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AQP/AQP/AQAEBAQEBAf/AQP/AQAEBAQEBAQEBAQEBAQEBAQEBAf/AQP/AQAEBAQEBAf/AQP/AQAEBAf/AQP/AQAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AQP/AQAEBAf/AQP/AQAEBAf/AQAEBAQEBAQEBAf/AQP/AQP/AQP/AQAEBAQEBAf/AQP/AQAEBAf/AQP/AQAEBAf/AQAEBAf/AQP/AQP/AQP/AQP/AQP/AQP/AQAEBAQEBAf/AQP/AQP/AQP/AQP/AQP/AQAEBAf/AQP/AQP/AQP/AQP/AQP/AQP/AQP/AQAEBAf/AQP/AQCH5BAAAAAAAIf8LSW1hZ2VNYWdpY2sNZ2FtbWE9MC40NTQ1NQAsAAAAABAAEAAACP4AAQQQMIBAAQMHECRQsIBBAwcPIESQMIFCBQsXMGTQsIFDBw8fQIQQMYJECRMnUKRQsYJFCxcvYMSQMYNGDRs3cOTQsYNHDx8/gAQRMoRIESNHkCRRsoRJEydPoESRMoVKFStXsGTRsoVLFy9fwIQRM4ZMGTNn0KRRs4ZNGzdv4MSRM4dOHTt38OTRs4dPHz9/AAUSNIhQIUOHECVStIhRI0ePIEWSNIlSJUuXMGXStIlTJ0+fQIUSNYpUKVOnUKVStYpVK1evYMWSNYtWLVu3cOXStYtXL1+/gAUTNoxYMWPHkCVTtoxZM2fPoEWTNo1aNWvXsGXTto1bN2/fwCWFEzeOXDlz59ClU7eOXTt37+DFkzePXj179/Dl07ePXz9//wQEADs=")
-        self.error_img = PhotoImage(data = "R0lGODlhEAAQAPAAAAEBAe0cJCH5BAAAAAAAIf8LSW1hZ2VNYWdpY2sNZ2FtbWE9MC40NTQ1NQAsAAAAABAAEAAAAiKMA6l5bcucW7LGWe3NiHK4NWB4jFynnA+ZAZq6siL0mUcBADs=")
-        self.img_bracket = PhotoImage(data = "R0lGODlhEAAQAHAAACH/C0ltYWdlTWFnaWNrDWdhbW1hPTAuNDU0NTUAIfkEAAAAAAAsAAAAABAAEACHAAAAAAAzAABmAACZAADMAAD/ACsAACszACtmACuZACvMACv/AFUAAFUzAFVmAFWZAFXMAFX/AIAAAIAzAIBmAICZAIDMAID/AKoAAKozAKpmAKqZAKrMAKr/ANUAANUzANVmANWZANXMANX/AP8AAP8zAP9mAP+ZAP/MAP//MwAAMwAzMwBmMwCZMwDMMwD/MysAMyszMytmMyuZMyvMMyv/M1UAM1UzM1VmM1WZM1XMM1X/M4AAM4AzM4BmM4CZM4DMM4D/M6oAM6ozM6pmM6qZM6rMM6r/M9UAM9UzM9VmM9WZM9XMM9X/M/8AM/8zM/9mM/+ZM//MM///ZgAAZgAzZgBmZgCZZgDMZgD/ZisAZiszZitmZiuZZivMZiv/ZlUAZlUzZlVmZlWZZlXMZlX/ZoAAZoAzZoBmZoCZZoDMZoD/ZqoAZqozZqpmZqqZZqrMZqr/ZtUAZtUzZtVmZtWZZtXMZtX/Zv8AZv8zZv9mZv+ZZv/MZv//mQAAmQAzmQBmmQCZmQDMmQD/mSsAmSszmStmmSuZmSvMmSv/mVUAmVUzmVVmmVWZmVXMmVX/mYAAmYAzmYBmmYCZmYDMmYD/maoAmaozmapmmaqZmarMmar/mdUAmdUzmdVmmdWZmdXMmdX/mf8Amf8zmf9mmf+Zmf/Mmf//zAAAzAAzzABmzACZzADMzAD/zCsAzCszzCtmzCuZzCvMzCv/zFUAzFUzzFVmzFWZzFXMzFX/zIAAzIAzzIBmzICZzIDMzID/zKoAzKozzKpmzKqZzKrMzKr/zNUAzNUzzNVmzNWZzNXMzNX/zP8AzP8zzP9mzP+ZzP/MzP///wAA/wAz/wBm/wCZ/wDM/wD//ysA/ysz/ytm/yuZ/yvM/yv//1UA/1Uz/1Vm/1WZ/1XM/1X//4AA/4Az/4Bm/4CZ/4DM/4D//6oA/6oz/6pm/6qZ/6rM/6r//9UA/9Uz/9Vm/9WZ/9XM/9X///8A//8z//9m//+Z///M////AAAAAAAAAAAAAAAACGYAlQkcSLDgwHoHEwpEaLChwXrSIipDGFEaQYYCLWYUSG+ZwWUalUnz2JCeSGUeQw4kudGkxY7KTCpzh/LkRocuSY4kKFOnzJAMWdoEGZNYwZ8DLQoVCDLiMpcSeTpUyBKjR5kCAwIAOw==")
+        self.img_error = PhotoImage(data = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAC3UlEQVQ4T42Tz2tcVRTHP+e+H/N7pk2acSYzyoAmC38hRJBQqW5E6s6FWKktDaVVof0PhNKFf4GiUIUiuBDBjQu7EoQWleqiSCGxlRiSmNS0k8wk8978eO/dK+++LFx6Npd7zzmfc7jnewQgXDozouDkSEx6zcwRQEDSE4g1cOgXhRlG49KXX+UlWHrXOK/NwTgBkwaJzTHdAWYysTnieZipImJMxhCD8T2iH/6M5eC9c8Z/cRYzGJH6UzNhwMTMU3h/yTYx/Ow6vl5BSqUMoDVS8hnfeYD0z582uYVZTDABVEbv9Ujqi5QvX7TAwcfXcLZvIbUj2CoaVNFlmAJ6594xhRea6DCy1WwHvT2S9gnKly5kgE8+x9n4Ean+B1BwCO/uIHtnT5ni83V0OAFR4LiYfo8oN0f16ocWsH/lI9xwGVU7ClEESYLkPcI/usjumbdM6Zk6OnYxSQTDIWZrk1B1OHb9mgU8On+R/GQVp9mCfMEWUk7CYGUXebR02lQ6ZeLVNcxuF0ZD9PYD+qV52r/8ZAGbi8ep9ZdRjSb4OWTqGOrJNoP1IbL96nFT8/ZIDkagFLiuhXSDIq3bd+zb3wvPMVUIIFeAOII4wSnm6Ztp5K9W3Tw2N0Uc2QGnM8JJEh6u9Wj+fg8RYevZOWYer5CIn/2y1niOsL22h6x2WqY5WyaKEjueFJP3HP5Z3mC91sBzc8zsrtN4qkk8yQJSufmOsPUwRO63mqbVOAQYUCLog33u1To0PriAoNn69Avmu2s45Qr6UI2eUmz0QmSl2TBPTJeIUq1rgxLFeHOTu2+8ySvffG07vvn2KZ7+7lty7TY6ybpIAav7IbJcr5tOrcTYOgwKIdrZ4dfFl3n9xg0L+P7kSV66dRN/ZgatM70XRHE/CJHfjkxHC7WKG6WLlPrS5dGafr9vz2x5FNVqFXO4maLBFbgdBLEV78+VoyMfyWVf/P8s0Hp8Iujl/wU4gUfgnVm30AAAAABJRU5ErkJggg==")
 
         # Set window icon
         self.master.tk.call('wm', 'iconphoto', root._w, self.img_2)
 
         # Frame with labelframes
-        self.btnFrame = Frame(root, height=60)
-        self.btnFrame.grid(row=0, column=0)
+        self.btnFrame = Frame(root, height=60, padx=5)
+        self.btnFrame.grid(row=0, column=0, sticky="W")
 
         # Labelframes
+        self.fileFrame = LabelFrame(self.btnFrame, text="File", padx=5, pady=5)
+        self.fileFrame.grid(row=0, column=0)
         self.terrainFrame = LabelFrame(self.btnFrame, text="Terrain", padx=5, pady=5)
-        self.terrainFrame.grid(row=0, column=0)
+        self.terrainFrame.grid(row=0, column=1)
         self.toolFrame = LabelFrame(self.btnFrame, text="Tools", padx=5, pady=5)
-        self.toolFrame.grid(row=0, column=1)
+        self.toolFrame.grid(row=0, column=2)
         self.coordFrame = LabelFrame(self.btnFrame, text="Coordinates", padx=5, pady=5, width=70)
-        self.coordFrame.grid(row=0, column=2)
+        self.coordFrame.grid(row=0, column=3)
         #self.coordFrame.grid_propagate(0)
         self.sizeFrame = LabelFrame(self.btnFrame, text="Size", padx=5, pady=5)
-        self.sizeFrame.grid(row=0, column=3)
+        self.sizeFrame.grid(row=0, column=4)
 
         # Buttons
+        self.openbtn = Button(self.fileFrame, image=self.img_open, command=self.openromfile)
+        self.openbtn.grid(row=0, column=0)
+        self.savebtn = Button(self.fileFrame, image=self.img_save, state="disabled", command=self.saveromfile)
+        self.savebtn.grid(row=0, column=1)
+
         self.tile_0_btn = Button(self.terrainFrame, image=self.img_0, command=lambda: self.selectterrain("0"))
         self.tile_0_btn.grid(row=0, column=0)
         self.tile_1_btn = Button(self.terrainFrame, image=self.img_1, command=lambda: self.selectterrain("1"))
@@ -127,12 +140,13 @@ class Zelda2MapEdit:
         self.tile_f_btn = Button(self.terrainFrame, image=self.img_f, command=lambda: self.selectterrain("f"))
         self.tile_f_btn.grid(row=0, column=15)
         
-        self.bracketbtn = Button(self.toolFrame, image=self.img_bracket, command=lambda: self.selectterrain("x"))
-        self.bracketbtn.grid(row=0, column=0)
+        self.breakpointbtn = Button(self.toolFrame, image=self.img_breakpoint, command=lambda: self.selectterrain("x"))
+        self.breakpointbtn.grid(row=0, column=0)
+        self.editlocationbtn = Button(self.toolFrame, image=self.img_edit, command=lambda: self.selectterrain("y"))
+        self.editlocationbtn.grid(row=0, column=1)
 
         # Labels 
         self.coordlabeltext = StringVar()
-        #self.coordlabeltext.set("(0, 0)")
         self.coordlabeltext.set("'0' (0, 0)")
         self.coordlabel = Label(self.coordFrame, textvariable=self.coordlabeltext)
         self.coordlabel.grid(row=0, column=0, pady=2)
@@ -151,8 +165,9 @@ class Zelda2MapEdit:
         self.locationlabel = Label(self.labelFrame, textvariable=self.locationlabeltext)
         self.locationlabel.grid(row=0, column=0)
         
-        # Menu
+        ### Menues
         self.menubar = Menu(self.master)
+        # File
         self.filemenu = Menu(self.menubar, tearoff=0)
         self.filemenu.add_command(label="Open..", command=self.openromfile)
         self.filemenu.add_command(label="Save", command=self.saveromfile)
@@ -160,7 +175,7 @@ class Zelda2MapEdit:
         self.filemenu.add_separator()
         self.filemenu.add_command(label="Exit", command=self.quit)
         self.menubar.add_cascade(label="File", menu=self.filemenu)
-
+        # Map
         self.mapmenu = Menu(self.menubar, tearoff=0)
         self.mapmenu.add_command(label="West Hyrule", command=lambda: self.changemap(0))
         self.mapmenu.entryconfig("West Hyrule", state="disabled")
@@ -171,11 +186,11 @@ class Zelda2MapEdit:
         self.mapmenu.add_command(label="Maze Island", command=lambda: self.changemap(3))
         self.mapmenu.entryconfig("Maze Island", state="disabled")
         self.menubar.add_cascade(label="Map", menu=self.mapmenu)
-
-        self.settingsmenu = Menu(self.menubar, tearoff=0)
-        self.settingsmenu.add_command(label="Preferences..", command=self.preferences)
-        self.menubar.add_cascade(label="Settings", menu=self.settingsmenu)
-
+        # Options
+        self.optionsmenu = Menu(self.menubar, tearoff=0)
+        self.optionsmenu.add_command(label="Hidden locations..", command=self.hiddenlocations)
+        self.menubar.add_cascade(label="Options", menu=self.optionsmenu)
+        # Help
         self.helpmenu = Menu(self.menubar, tearoff=0)
         self.helpmenu.add_command(label="About..", command=self.about)
         self.menubar.add_cascade(label="Help", menu=self.helpmenu)
@@ -218,16 +233,9 @@ class Zelda2MapEdit:
         # List of list of breakpoints
         self.breakpoints = [ [], [], [], [] ]
 
-        # Palace 2 and 6 hidden or visible
-        # (not implemented yet)
-        self.palace6hidden = 1
-        # New Kasuto hidden
-        self.newkasutohidden = 1
-
         # Locations on map
-        # Name, x address, y address, x offset, y offset, palace pointer address
-        # West Hyrule
-
+        # Format:
+        # [ Name, Rom address for x-value, Rom address for y-value, x.value, y-value, x-offset, y-offset, Rom address for palace pointer ]
         self.maplocations = [[[ "North Castle", "466E", "462F", 0, 0, 0, 0, 0 ],
                              [ "Trophy cave", "466F", "4630", 0, 0, 0, 0, 0 ],
                              [ "Forest with 50 exp. bag and Aches", "4670", "4631", 0, 0, 0, 0, 0 ],
@@ -348,7 +356,7 @@ class Zelda2MapEdit:
                              [ "Cave A on the way to Great Palace", "8682", "8643", 0, 0, 64, 0, 0 ],
                              [ "Life doll in swamp", "8683", "8644", 0, 0, 0, 0, 0 ],
                              [ "Extra battle scene (same spot as 864B)", "8684", "8645", 0, 0, 0, 0, 0 ],
-                             [ "500 exp. bag on beach near OceanPalace", "8685", "8646", 0, 0, 0, 0, 0 ],
+                             [ "500 exp. bag on beach near Ocean Palace", "8685", "8646", 0, 0, 0, 0, 0 ],
                              [ "Red Magic Jar on beach near Nabooru", "8686", "8647", 0, 0, 0, 0, 0 ],
                              [ "Life doll on beach", "8687", "8648", 0, 0, 0, 0, 0 ],
                              [ "Heart Container on beach east of 3-Eye Rock", "8688", "8649", 0, 0, 0, 0, 0 ],
@@ -365,8 +373,9 @@ class Zelda2MapEdit:
                              [ "New Kasuto *", "869F", "8660", 0, 0, 0, 0, 0 ],
                              [ "Old Kasuto", "86A1", "8662", 0, 0, 64, 128, 0 ],
                              [ "Ocean Palace", "86A2", "8663", 0, 0, 0, 128, 0 ],
-                             [ "Call location for Hidden Palace", "8388", "8382", 0, 0, 0, 0, 0 ],
-                             [ "Hidden Palace", "86A3", "8664", 0, 0, 0, 0, 0 ],
+                             #[ "Call location for Hidden Palace", "8388", "8382", 0, 0, 0, 0, 0 ],
+                             #[ "Hidden Palace", "86A3", "1DF78", 0, 0, 0, 128, 0 ],
+                             #[ "Hidden Palace", "86A3", "8664", 0, 0, 0, 128, 0 ],
                              [ "Great Palace", "86A4", "8665", 0, 0, 0, 128, 0 ]],
                              [[ "Cave B West Exit", "A14B", "A10C", 0, 0, 0, 0, 0 ],
                              [ "Cave B East Exit", "A14C", "A10D", 0, 0, 64, 0, 0 ],
@@ -424,12 +433,24 @@ class Zelda2MapEdit:
         self.movelocation = -1
         self.movelocationprevx = -1
         self.movelocationprevy = -1
-                            
+
+        # Palace 6 and new Kasuto hidden or visible
+        # (not implemented yet)
+        self.palace6hidden = IntVar()
+        # New Kasuto hidden
+        self.newkasutohidden = IntVar()
+
     # End __init__
 
-    def preferences(self):
-        preferencesWindow = Toplevel(self.master)
-        Button(preferencesWindow, text="Close", command=preferencesWindow.destroy).pack(pady=10)
+    def hiddenlocations(self):
+        hlWindow = Toplevel(self.master, padx=5, pady=5)
+        hlWindow.resizable(0,0)
+        hiddenLocationsLF = LabelFrame(hlWindow, text="Hidden locations", padx=5, pady=5)
+        hiddenLocationsLF.grid(row=1, column=1, columnspan=3)
+        palace6CB = Checkbutton(hiddenLocationsLF, text="Palace 6", variable=self.palace6hidden).grid(row=1, column=1, sticky=W)
+        newKasutoCB = Checkbutton(hiddenLocationsLF, text="New Kasuto", variable=self.newkasutohidden).grid(row=2, column=1, sticky=W)
+        Button(hlWindow, text="Close", command=hlWindow.destroy).grid(row=5,column=3)
+
 
     def about(self):
         aboutWindow = Toplevel(self.master)
@@ -454,11 +475,11 @@ class Zelda2MapEdit:
         self.tile_d_btn.config(relief=RAISED)
         self.tile_e_btn.config(relief=RAISED)
         self.tile_f_btn.config(relief=RAISED)
-        self.bracketbtn.config(relief=RAISED)
+        self.breakpointbtn.config(relief=RAISED)
+        self.editlocationbtn.config(relief=RAISED)
 
         # Set terrain and sink the button
         self.selectedterrain = terrain
-
         if terrain == "0":
             self.tile_0_btn.config(relief=SUNKEN)
         elif terrain == "1":
@@ -492,7 +513,9 @@ class Zelda2MapEdit:
         elif terrain == "f":
             self.tile_f_btn.config(relief=SUNKEN)
         elif terrain == "x":
-            self.bracketbtn.config(relief=SUNKEN)
+            self.breakpointbtn.config(relief=SUNKEN)
+        elif terrain == "y":
+            self.editlocationbtn.config(relief=SUNKEN)
 
     def openromfile(self):
         # Save before?
@@ -588,6 +611,17 @@ class Zelda2MapEdit:
                 handle.seek(int(self.maplocations[i][j][2], 16))
                 self.maplocations[i][j][4] = int(handle.read(1).encode("hex"), 16)
 
+        # Special handling for hidden locations
+        # Read Palace 6 y-value
+        #handle.seek(int("8664", 16))
+        #l = int(handle.read(1).encode("hex"), 16)
+        #print "palace 6 y: ", l
+        #if l == 0:
+        #    self.palace6hidden.set(1)
+        #else:
+        #    self.palace6hidden.set(0)
+           
+
         # Close file
         handle.close()
 
@@ -601,6 +635,7 @@ class Zelda2MapEdit:
         self.mapmenu.entryconfig("East Hyrule", state="normal")
         self.mapmenu.entryconfig("Maze Island", state="normal")
         self.filemenu.entryconfig("Save", state="normal")
+        self.savebtn.config(state="normal")
 
         # Not edited
         self.edited = 0
@@ -675,6 +710,16 @@ class Zelda2MapEdit:
                             handle.write(byte2)
                             break
 
+        # Special handling for hidden locations
+        # Write Palace 6 y-value
+        if self.palace6hidden.get() == 0:
+            y = hex(self.maplocations[2][41][4])[2:].zfill(2)
+        else:
+            y = "00"
+        handle.seek(int("8664", 16))
+        y = y.decode("hex")
+        handle.write(y) 
+
         handle.close()
         self.edited = 0
         self.activemap = currentactivemap
@@ -688,7 +733,6 @@ class Zelda2MapEdit:
         self.updatemapsizelabel(mapsize)
         
     def mapencode(self, input_string):
-        #print "mapencode"
         ycount = 0
         xcount = 0 # Encoding must stop at 64 tiles per line of map
         tilecount = 1
@@ -733,7 +777,6 @@ class Zelda2MapEdit:
             y = l[4]-l[6]
             self.canvas.create_rectangle((x*16), ((y-30)*16), (x*16+16)-1, ((y-30)*16+16)-1, outline="blue", width=1)
             #self.canvas.create_rectangle((x*16)-1, ((y-30)*16)-1, (x*16+16)+1, ((y-30)*16+16)+1, outline="blue", width=2)
-
 
     def drawmap(self):
         canvasposx = 0
@@ -787,7 +830,7 @@ class Zelda2MapEdit:
         elif self.maparray[x][y+(self.mapsizey*offset)] == "f":
             self.canvas.create_image(x*16,y*16, anchor=NW, image=self.img_f)
         else:
-            self.canvas.create_image(x*16,y*16, anchor=NW, image=self.error_img)
+            self.canvas.create_image(x*16,y*16, anchor=NW, image=self.img_error)
 
     def drawbreakpoints(self):
         #print "drawbreakpoints"
@@ -882,6 +925,9 @@ class Zelda2MapEdit:
             if self.selectedterrain == 'x':
                 #Toggle breakpoint at location
                 self.togglebreakpoint(maparraybreakpointx, maparrayy)
+            elif self.selectedterrain == 'y':
+                #
+                #print "y"    
             else:
                 # Update tile
                 self.maparray[maparrayx][maparrayy+yoffset] = self.selectedterrain
@@ -935,7 +981,6 @@ class Zelda2MapEdit:
             # Make sure we are inside borders of the map
             if x < self.mapsizex and x >= 0 and y < self.mapsizey and y >= 0:
                 # Find a location to move
-
                 for p, l in enumerate(self.maplocations[self.activemap]):
                     if l[3]-l[5] == x and l[4]-l[6] == y+30:
                         self.movelocation = p
